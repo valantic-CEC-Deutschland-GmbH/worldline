@@ -1,0 +1,182 @@
+<?xml version="1.0"?>
+<database xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          name="zed"
+          xsi:noNamespaceSchemaLocation="http://static.spryker.com/schema-01.xsd"
+          namespace="Orm\Zed\Worldline\Persistence" package="src.Orm.Zed.Worldline.Persistence">
+
+    <table name="vsy_payment_worldline">
+        <column name="id_payment_worldline" type="INTEGER" primaryKey="true" autoIncrement="true"/>
+        <column name="fk_sales_order" type="INTEGER"/>
+
+        <column name="payment_id" type="VARCHAR"/>
+        <column name="type" type="VARCHAR"/>
+        <column name="payment_method" type="VARCHAR"/>
+        <column name="merchant_reference" type="VARCHAR"/>
+
+        <foreign-key name="vsy_payment_worldline-fk_sales_order" foreignTable="spy_sales_order" phpName="SpySalesOrder">
+            <reference foreign="id_sales_order" local="fk_sales_order"/>
+        </foreign-key>
+
+        <index name="index-spy_payment_worldline-merchant_reference">
+            <index-column name="merchant_reference"/>
+        </index>
+
+        <behavior name="timestampable"/>
+    </table>
+
+    <table name="vsy_payment_worldline_hosted_checkout">
+        <column name="fk_payment_worldline" type="INTEGER" primaryKey="true"/>
+        <column name="hosted_checkout_id" type="VARCHAR"/>
+        <column name="returnmac" type="VARCHAR"/>
+        <column name="partial_redirect_url" type="VARCHAR" size="2000"/>
+        <column name="return_url" type="VARCHAR" size="2048"/>
+        <column name="customer_ip_address" type="VARCHAR"/>
+        <column name="customer_selected_locale" type="VARCHAR"/>
+        <column name="customer_timezone" type="VARCHAR"/>
+        <column name="customer_user_agent" type="VARCHAR"/>
+        <column name="customer_color_depth" type="INTEGER"/>
+        <column name="customer_java_enabled" type="BOOLEAN"/>
+        <column name="customer_screen_height" type="VARCHAR" size="6"/>
+        <column name="customer_screen_width" type="VARCHAR" size="6"/>
+        <column name="customer_browser_locale" type="VARCHAR"/>
+        <column name="customer_timezone_offset" type="INTEGER"/>
+
+        <foreign-key name="vsy_payment_worldline_hosted_checkout-fk_payment_worldline" foreignTable="vsy_payment_worldline" phpName="VsyPaymentWorldline">
+            <reference foreign="id_payment_worldline" local="fk_payment_worldline"/>
+        </foreign-key>
+
+        <index name="index-vsy_payment_worldline_hosted_checkout-hosted_checkout_id">
+            <index-column name="hosted_checkout_id"/>
+        </index>
+
+        <index name="index-vsy_payment_worldline_hosted_checkout-fk_payment_worldline">
+            <index-column name="fk_payment_worldline"/>
+        </index>
+
+        <behavior name="timestampable"/>
+    </table>
+
+    <table name="vsy_worldline_api_call_log">
+        <column name="id_worldline_api_call_log" type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
+        <column name="url" type="VARCHAR" size="2048"/>
+        <column name="request_id" type="VARCHAR" required="true"/>
+        <column name="request_body" type="LONGVARCHAR"/>
+        <column name="response_body" type="LONGVARCHAR"/>
+        <column name="error_code" type="VARCHAR"/>
+        <column name="error_message" type="LONGVARCHAR"/>
+    </table>
+
+    <table name="vsy_worldline_api_log">
+        <column name="id_worldline_api_log" type="INTEGER" primaryKey="true" autoIncrement="true"/>
+        <column name="fk_payment_worldline" type="INTEGER"/>
+        <column name="api_method" type="VARCHAR"/>
+        <column name="merchant_id" type="VARCHAR"/>
+        <column name="api_key" type="VARCHAR"/>
+        <column name="api_endpoint" type="VARCHAR"/>
+        <column name="order_reference" type="VARCHAR"/>
+        <column name="payment_id" type="VARCHAR"/>
+        <column name="error_id" type="VARCHAR"/>
+        <column name="error_code" type="VARCHAR"/>
+        <column name="error_property_name" type="VARCHAR"/>
+        <column name="error_message" type="VARCHAR"/>
+        <column name="http_status_code" type="INTEGER"/>
+
+        <foreign-key name="vsy_worldline_api_log-fk_payment_worldline" foreignTable="vsy_payment_worldline" phpName="VsyPaymentWorldline">
+            <reference foreign="id_payment_worldline" local="fk_payment_worldline"/>
+        </foreign-key>
+
+        <behavior name="timestampable"/>
+    </table>
+
+    <table name="vsy_worldline_rest_receive_log">
+        <column name="id_worldline_rest_receive_log" type="INTEGER" primaryKey="true" autoIncrement="true"/>
+        <column name="event_id" type="VARCHAR"/>
+        <column name="event_body" type="LONGVARCHAR"/>
+    </table>
+
+    <table name="vsy_worldline_rest_log">
+        <column name="id_worldline_rest_log" type="INTEGER" primaryKey="true" autoIncrement="true"/>
+        <column name="fk_payment_worldline" type="INTEGER"/>
+        <column name="merchant_id" type="VARCHAR"/>
+        <column name="event_api_version" type="VARCHAR"/>
+        <column name="event_creation_date" type="VARCHAR"/>
+        <column name="event_id" type="VARCHAR"/>
+        <column name="event_type" type="VARCHAR"/>
+        <column name="error_code" type="VARCHAR"/>
+        <column name="error_message" type="VARCHAR"/>
+        <column name="fk_worldline_rest_receive_log" type="INTEGER"/>
+
+        <foreign-key name="vsy_worldline_rest_log-fk_payment_worldline" foreignTable="vsy_payment_worldline" phpName="VsyPaymentWorldline">
+            <reference foreign="id_payment_worldline" local="fk_payment_worldline"/>
+        </foreign-key>
+
+        <foreign-key name="vsy_worldline_rest_log-fk_worldline_rest_receive_log" foreignTable="vsy_worldline_rest_receive_log" phpName="VsyWorldlineRestReceiveLog">
+            <reference foreign="id_worldline_rest_receive_log" local="fk_worldline_rest_receive_log"/>
+        </foreign-key>
+
+        <behavior name="timestampable"/>
+    </table>
+
+    <table name="vsy_payment_worldline_transaction_status_log">
+        <column name="id_payment_worldline_transaction_status_log" type="INTEGER" primaryKey="true" autoIncrement="true"/>
+        <column name="fk_payment_worldline" type="INTEGER"/>
+        <column name="fk_worldline_api_log" type="INTEGER"/>
+        <column name="fk_worldline_rest_log" type="INTEGER"/>
+        <column name="transaction_type" type="VARCHAR" /> <!-- like payment, refund, token -->
+        <column name="status" type="VARCHAR" /> <!-- like created, redirected, pending_approval -->
+        <column name="status_category" type="VARCHAR" /> <!-- (from Worldline's statusOutput.statusCategory; like PENDING_CONNECT_OR_3RD_PARTY)-->
+        <column name="status_code" type="INTEGER" /> <!-- (from Worldline's statusOutput.statusCode; like 150) -->
+        <column name="status_code_change_date_time" type="VARCHAR" />
+        <column name="authorized" type="BOOLEAN" />
+        <column name="cancellable" type="BOOLEAN" />
+        <column name="refundable" type="BOOLEAN" />
+        <column name="amount" type="INTEGER" />
+
+        <foreign-key name="vsy_payment_worldline_transaction-fk_payment_worldline" foreignTable="vsy_payment_worldline" phpName="VsyPaymentWorldline">
+            <reference foreign="id_payment_worldline" local="fk_payment_worldline"/>
+        </foreign-key>
+
+        <foreign-key name="vsy_payment_worldline_transaction-fk_worldline_api_log" foreignTable="vsy_worldline_api_log" phpName="VsyWorldlineApiLog">
+            <reference foreign="id_worldline_api_log" local="fk_worldline_api_log"/>
+        </foreign-key>
+
+        <foreign-key name="vsy_payment_worldline_transaction-fk_worldline_rest_log" foreignTable="vsy_worldline_rest_log" phpName="VsyWorldlineRestLog">
+            <reference foreign="id_worldline_rest_log" local="fk_worldline_rest_log"/>
+        </foreign-key>
+
+        <behavior name="timestampable"/>
+    </table>
+
+    <table name="vsy_worldline_token">
+        <column name="id_token" type="INTEGER" primaryKey="true" autoIncrement="true"/>
+        <column name="fk_customer" type="INTEGER"/>
+        <column name="fk_initial_three_d_secure_result" type="INTEGER"/>
+        <column name="payment_method_key" type="VARCHAR"/>
+        <column name="token" type="VARCHAR" required="true"/>
+        <column name="expiry_month" type="VARCHAR" size="4"/>
+        <column name="obfuscated_card_number" type="VARCHAR" size="19"/>
+        <column name="holder_name" type="VARCHAR"/>
+        <column name="initial_scheme_transaction_id" type="VARCHAR"/>
+        <column name="expired_at" type="TIMESTAMP"/>
+        <column name="deleted_at" type="TIMESTAMP"/>
+
+        <foreign-key name="vsy_worldline_token-fk_customer" foreignTable="spy_customer" phpName="SpyCustomer">
+            <reference foreign="id_customer" local="fk_customer"/>
+        </foreign-key>
+
+        <foreign-key name="vsy_worldline_token-fk_initial_three_d_secure_result" foreignTable="vsy_worldline_three_d_secure_result" phpName="VsyWorldlineThreeDSecureResult">
+            <reference foreign="id_three_d_secure_result" local="fk_initial_three_d_secure_result"/>
+        </foreign-key>
+
+        <behavior name="timestampable"/>
+    </table>
+
+    <table name="vsy_worldline_three_d_secure_result">
+        <column name="id_three_d_secure_result" type="INTEGER" primaryKey="true" autoIncrement="true"/>
+        <column name="acs_transaction_id" type="VARCHAR"/>
+        <column name="method" type="VARCHAR"/>
+        <column name="utctimestamp" type="VARCHAR"/>
+
+        <behavior name="timestampable"/>
+    </table>
+</database>

@@ -1,0 +1,32 @@
+{
+    "apiVersion": "v1",
+    "id": "97a4fcdf-9a08-4a59-a0c0-69bfd7e1d59d",
+    "created": "2022-09-14T17:14:39.688+0200",
+    "merchantId": "6511",
+    "type": "payment.paid",
+    "payment": {
+        "id": "12345",
+        "paymentOutput": {
+            "amountOfMoney": {
+                "amount": 1000,
+                "currencyCode": "EUR"
+            },
+            "references": {
+                "paymentReference": "200001681810"
+            },
+            "paymentMethod": "bankTransfer",
+            "bankTransferPaymentMethodSpecificOutput": {
+                "paymentProductId": 11
+            }
+        },
+        "status": "PAID",
+        "statusOutput": {
+            "isCancellable": true,
+            "statusCategory": "COMPLETED",
+            "statusCode": 600,
+            "statusCodeChangeDateTime": "20220901170000",
+            "isRefundable":  false,
+            "isAuthorized": true
+        }
+    }
+}

@@ -1,0 +1,80 @@
+{
+    "createdPaymentOutput" : {
+        "payment" : {
+            "id" : "000000651110000208120000100001",
+            "hostedCheckoutSpecificOutput" : {
+                "hostedCheckoutId" : "063cfa6c-2896-71ff-83f8-bbd6ff49025a"
+            },
+            "paymentOutput" : {
+                "amountOfMoney" : {
+                    "amount" : 55702,
+                    "currencyCode" : "EUR"
+                },
+                "references" : {
+                    "merchantReference" : "DE--1",
+                    "paymentReference" : "0"
+                },
+                "paymentMethod" : "card",
+                "cardPaymentMethodSpecificOutput" : {
+                    "paymentProductId" : 1,
+                    "authorisationCode" : "766472",
+                    "fraudResults" : {
+                        "fraudServiceResult" : "no-advice",
+                        "avsResult" : "0",
+                        "cvvResult" : "0"
+                    },
+                    "threeDSecureResults" : {
+                        "authenticationAmount" : {
+                            "amount" : 55702,
+                            "currencyCode" : "EUR"
+                        },
+                        "cavv" : "AAABBEg0VhI0VniQEjRWAAAAAAA=",
+                        "directoryServerTransactionId" : "C63CD9AD-F47E-4FA5-BA28-79291A71E934",
+                        "eci" : "05",
+                        "exemptionOutput" : {
+                            "exemptionRaised" : "none",
+                            "exemptionRequest" : "none"
+                        },
+                        "threeDSecureData" : {
+                            "acsTransactionId" : "ED8E162C-D239-49BB-B027-EDC3E923274E",
+                            "method" : "frictionless",
+                            "utcTimestamp" : "202301240937"
+                        },
+                        "threeDSecureVersion" : "2.2.0",
+                        "threeDServerTransactionId" : "3c53ade0-4355-4463-8e02-3364c93dc441"
+                    },
+                    "card" : {
+                        "cardNumber" : "************1111",
+                        "cardholderName" : "John Deer",
+                        "expiryDate" : "0427"
+                    },
+                    "schemeTransactionId" : "000000000024672"
+                }
+            },
+            "status" : "PENDING_APPROVAL",
+            "statusOutput" : {
+                "isCancellable" : true,
+                "statusCategory" : "PENDING_MERCHANT",
+                "statusCode" : 680,
+                "statusCodeChangeDateTime" : "20230124103735",
+                "isAuthorized" : true,
+                "isRefundable" : false
+            }
+        },
+        "paymentCreationReferences" : {
+            "additionalReference" : "DE--1",
+            "externalReference" : "DE--1"
+        },
+        "paymentStatusCategory" : "SUCCESSFUL",
+        "tokenizationSucceeded" : true,
+        "tokens" : "786e59e9-ea32-4b1e-bb57-0e36347eb8b5",
+        "displayedData" : {
+            "displayedDataType" : "SHOW_TRANSACTION_RESULTS",
+            "showData" : [ {
+                "key" : "CARDHOLDERINFO",
+                "value" : "cardholder"
+            } ]
+        }
+    },
+    "status" : "PAYMENT_CREATED"
+}

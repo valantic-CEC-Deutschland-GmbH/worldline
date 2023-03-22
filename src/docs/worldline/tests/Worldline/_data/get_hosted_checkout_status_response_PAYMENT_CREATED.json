@@ -1,0 +1,53 @@
+{
+    "createdPaymentOutput" : {
+        "payment" : {
+            "id" : "000000891566072501680000200001",
+            "hostedCheckoutSpecificOutput" : {
+                "hostedCheckoutId" : "dbcb004a-1eda-4e83-aa47-1656bcdc3e36",
+                "variant" : "100"
+            },
+            "paymentOutput" : {
+                "amountOfMoney" : {
+                    "amount" : 2345,
+                    "currencyCode" : "USD"
+                },
+                "references" : {
+                    "referenceOrigPayment" : "0"
+                },
+                "paymentMethod" : "card",
+                "cardPaymentMethodSpecificOutput" : {
+                    "paymentProductId" : 1,
+                    "authorisationCode" : "123456",
+                    "card" : {
+                        "cardNumber" : "************7977",
+                        "expiryDate" : "1299"
+                    },
+                    "fraudResults" : {
+                        "avsResult" : "0",
+                        "cvvResult" : "M",
+                        "fraudServiceResult" : "no-advice"
+                    },
+                    "threeDSecureResults" : {
+                        "authenticationAmount" : {
+                            "currencyCode" : "EUR",
+                            "amount" : 2345
+                        }
+                    }
+                }
+            },
+            "status" : "PENDING_APPROVAL",
+            "statusOutput" : {
+                "isCancellable" : true,
+                "statusCategory" : "PENDING_MERCHANT",
+                "statusCode" : 600,
+                "isAuthorized" : true
+            }
+        },
+        "paymentCreationReferences" : {
+            "additionalReference" : "00000089156607250168",
+            "externalReference" : "000000891566072501680000200001"
+        },
+        "tokens" : ""
+    },
+    "status" : "PAYMENT_CREATED"
+}

@@ -1,0 +1,27 @@
+namespace: ValanticSprykerTest\Zed\WorldlineWebhook
+extends: '../../codeception.base.yml'
+
+suites:
+    Communication:
+        path: Communication
+        actor: WorldlineWebhookCommunicationTester
+        modules:
+            enabled:
+                - Asserts
+                - \ValanticSprykerTest\Shared\Testify\Helper\Environment
+                -   \SprykerTest\Shared\Testify\Helper\LocatorHelper:
+                        projectNamespaces: [ 'ValanticSpryker' ]
+                - \SprykerTest\Shared\Testify\Helper\DataCleanupHelper
+                - \SprykerTest\Shared\Sales\Helper\SalesDataHelper
+                - \SprykerTest\Shared\Sales\Helper\SalesHelper
+                - \SprykerTest\Shared\Testify\Helper\ConfigHelper
+                - \SprykerTest\Shared\Propel\Helper\TransactionHelper
+                - \SprykerTest\Client\Testify\Helper\ClientHelper
+                - \SprykerTest\Client\Queue\Helper\QueueHelper
+                - \SprykerTest\Zed\Oms\Helper\OmsHelper
+                - \SprykerTest\Shared\Customer\Helper\CustomerDataHelper
+                - \SprykerTest\Shared\Testify\Helper\DependencyHelper
+                - \SprykerTest\Shared\Quote\Helper\PersistentQuoteHelper
+                - \SprykerTest\Shared\Product\Helper\ProductDataHelper
+                - \SprykerTest\Zed\Sales\Helper\BusinessHelper
+                - \ValanticSprykerTest\Shared\Worldline\Helper\HostedCheckoutHelper

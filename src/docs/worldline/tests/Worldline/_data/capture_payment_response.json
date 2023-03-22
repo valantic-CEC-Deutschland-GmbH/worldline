@@ -1,0 +1,37 @@
+{
+    "id" : "000000000100000000010000100001",
+    "captureOutput" : {
+        "amountOfMoney" : {
+            "amount" : 100,
+            "currencyCode" : "EUR"
+        },
+        "references" : {
+            "merchantReference" : "AcmeOrder0001",
+            "paymentReference" : "0"
+        },
+        "paymentMethod" : "card",
+        "cardPaymentMethodSpecificOutput" : {
+            "paymentProductId" : 1,
+            "authorisationCode" : "726747",
+            "card" : {
+                "cardNumber" : "************7977",
+                "expiryDate" : "1299"
+            },
+            "fraudResults" : {
+                "avsResult" : "0",
+                "cvvResult" : "0",
+                "fraudServiceResult" : "no-advice"
+            },
+            "threeDSecureResults" : {
+                "authenticationAmount" : {
+                    "currencyCode" : "EUR",
+                    "amount" : 100
+                }
+            }
+        }
+    },
+    "status" : "CAPTURE_REQUESTED",
+    "statusOutput" : {
+        "statusCode" : 91
+    }
+}

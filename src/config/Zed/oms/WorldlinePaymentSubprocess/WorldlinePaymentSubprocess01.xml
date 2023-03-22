@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<statemachine
+    xmlns="http://static.spryker.com"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://static.spryker.com http://static.spryker.com/oms-01.xsd">
+
+    <process name="WorldlinePayment">
+        <states>
+            <state name="payment pending" reserved="true"/>
+            <state name="wait for payment status" reserved="true"/>
+            <state name="payment cancelled" reserved="false"/>
+            <state name="payment rejected" reserved="false"/>
+            <state name="capture pending"/>
+            <state name="wait for capture status"/>
+            <state name="capture timed out"/>
+            <state name="capture restarted"/>
+            <state name="captured"/>
+            <state name="capture rejected" reserved="false"/>
+            <state name="payment cancellation pending" reserved="false"/>
+            <state name="capturable payment cancelled" reserved="false"/>
+        </states>
+
+        <transitions>
+            <transition happy="true">
+                <source>hosted checkout status payment created</source>
+                <target>payment pending</target>
+            </transition>
+
+            <transition>
+                <source>payment pending</source>
+                <target>wait for payment status</target>
+                <event>get payment status</event>
+            </transition>
+
+            <transition>
+                <source>wait for payment status</source>
+                <target>payment pending</target>
+            </transition>
+
+            <transition condition="Worldline/IsPaymentRejected">
+                <source>payment pending</source>
+                <target>payment rejected</target>
+            </transition>
+
+            <transition condition="Worldline/IsPaymentCancelled">
+                <source>payment pending</source>
+                <target>payment cancelled</target>
+            </transition>
+
+            <transition condition="Worldline/IsPaymentGuaranteed" happy="true">
+                <source>payment pending</source>
+                <target>capture pending</target>
+                <event>capture</event>
+            </transition>
+
+            <transition>
+                <source>capture pending</source>
+                <target>wait for capture status</target>
+                <event>get payment status</event>
+            </transition>
+
+            <transition>
+                <source>wait for capture status</source>
+                <target>capture pending</target>
+            </transition>
+
+            <transition condition="Worldline/IsCaptureTimedOut">
+                <source>capture pending</source>
+                <target>capture timed out</target>
+            </transition>
+
+            <transition>
+                <source>capture timed out</source>
+                <target>capture restarted</target>
+                <event>set capture pending</event>
+            </transition>
+
+            <transition>
+                <source>capture restarted</source>
+                <target>capture pending</target>
+            </transition>
+
+            <transition>
+                <source>payment pending</source>
+                <target>payment cancellation pending</target>
+                <event>cancel</event>
+            </transition>
+
+            <transition condition="Worldline/IsCapturablePaymentCancelled">
+                <source>payment cancellation pending</source>
+                <target>capturable payment cancelled</target>
+            </transition>
+
+            <transition condition="Worldline/IsCaptured" happy="true">
+                <source>capture pending</source>
+                <target>captured</target>
+            </transition>
+
+            <transition condition="Worldline/IsCaptureRejected">
+                <source>capture pending</source>
+                <target>capture rejected</target>
+            </transition>
+
+            <transition happy="true">
+                <source>captured</source>
+                <target>ready for order export</target>
+            </transition>
+        </transitions>
+
+        <events>
+            <event name="cancel" manual="true" command="Worldline/Cancel"/>
+            <event name="capture" manual="true" command="Worldline/Capture"/>
+            <event name="get payment status" command="Worldline/PaymentStatus" timeout="30 minutes"/>
+            <event name="set capture pending" command="Worldline/PaymentStatus" manual="true"/>
+        </events>
+    </process>
+</statemachine>

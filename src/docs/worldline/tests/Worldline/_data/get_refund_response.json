@@ -1,0 +1,24 @@
+{
+    "id" : "00000085001000006995000-500001",
+    "refundOutput" : {
+        "amountOfMoney" : {
+            "amount" : 1,
+            "currencyCode" : "EUR"
+        },
+        "references" : {
+            "merchantReference" : "AcmeOrder0001",
+            "paymentReference" : "0"
+        },
+        "paymentMethod" : "card",
+        "cardRefundMethodSpecificOutput" : {
+            "totalAmountPaid" : 100,
+            "totalAmountRefunded" : 0
+        }
+    },
+    "status" : "PENDING_APPROVAL",
+    "statusOutput" : {
+        "isCancellable" : true,
+        "statusCode" : 800,
+        "statusCodeChangeDateTime" : "20140630132747"
+    }
+}
