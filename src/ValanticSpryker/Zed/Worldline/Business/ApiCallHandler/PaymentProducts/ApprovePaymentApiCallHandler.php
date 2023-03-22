@@ -7,11 +7,11 @@ namespace ValanticSpryker\Zed\Worldline\Business\ApiCallHandler\PaymentProducts;
 use Exception;
 use Generated\Shared\Transfer\WorldlineApprovePaymentRequestTransfer;
 use Generated\Shared\Transfer\WorldlineApprovePaymentResponseTransfer;
+use Spryker\Shared\Kernel\Transfer\TransferInterface;
 use ValanticSpryker\Zed\Worldline\Business\ApiCallHandler\AbstractApiCallHandler;
 use ValanticSpryker\Zed\Worldline\Business\Client\WorldlineClientInterface;
 use ValanticSpryker\Zed\Worldline\Business\Logger\WorldlineApiLoggerInterface;
 use ValanticSpryker\Zed\Worldline\Business\Mapper\PaymentProductsMapperInterface;
-use Spryker\Shared\Kernel\Transfer\TransferInterface;
 
 class ApprovePaymentApiCallHandler extends AbstractApiCallHandler
 {

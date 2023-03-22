@@ -7,11 +7,11 @@ namespace ValanticSpryker\Zed\Worldline\Business\ApiCallHandler\Refund;
 use Exception;
 use Generated\Shared\Transfer\WorldlineRefundRequestTransfer;
 use Generated\Shared\Transfer\WorldlineRefundResponseTransfer;
+use Spryker\Shared\Kernel\Transfer\TransferInterface;
 use ValanticSpryker\Zed\Worldline\Business\ApiCallHandler\AbstractApiCallHandler;
 use ValanticSpryker\Zed\Worldline\Business\Client\WorldlineClientInterface;
 use ValanticSpryker\Zed\Worldline\Business\Logger\WorldlineApiLoggerInterface;
 use ValanticSpryker\Zed\Worldline\Business\Mapper\RefundsMapperInterface;
-use Spryker\Shared\Kernel\Transfer\TransferInterface;
 
 class CreateRefundApiCallHandler extends AbstractApiCallHandler
 {

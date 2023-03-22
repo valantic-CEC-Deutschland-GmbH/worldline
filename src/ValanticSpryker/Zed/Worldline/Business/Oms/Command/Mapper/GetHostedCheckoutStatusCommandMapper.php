@@ -6,8 +6,8 @@ namespace ValanticSpryker\Zed\Worldline\Business\Oms\Command\Mapper;
 
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\WorldlineGetHostedCheckoutStatusTransfer;
-use ValanticSpryker\Zed\Worldline\Business\Reader\WorldlineReaderInterface;
 use Spryker\Shared\Kernel\Transfer\TransferInterface;
+use ValanticSpryker\Zed\Worldline\Business\Reader\WorldlineReaderInterface;
 
 class GetHostedCheckoutStatusCommandMapper implements WorldlineCommandMapperInterface
 {

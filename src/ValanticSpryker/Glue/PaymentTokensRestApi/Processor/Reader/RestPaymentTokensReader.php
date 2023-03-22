@@ -5,12 +5,12 @@ declare(strict_types = 1);
 namespace ValanticSpryker\Glue\PaymentTokensRestApi\Processor\Reader;
 
 use Generated\Shared\Transfer\WorldlinePaymentTokenRequestTransfer;
-use ValanticSpryker\Client\PaymentTokens\PaymentTokensClientInterface;
-use ValanticSpryker\Glue\PaymentTokensRestApi\Processor\ResponseBuilder\PaymentTokensRestResponseBuilderInterface;
 use Spryker\Glue\GlueApplication\Rest\JsonApi\RestResourceInterface;
 use Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface;
 use Spryker\Glue\GlueApplication\Rest\Request\Data\RestRequestInterface;
 use Spryker\Zed\Customer\Business\Exception\CustomerNotFoundException;
+use ValanticSpryker\Client\PaymentTokens\PaymentTokensClientInterface;
+use ValanticSpryker\Glue\PaymentTokensRestApi\Processor\ResponseBuilder\PaymentTokensRestResponseBuilderInterface;
 
 class RestPaymentTokensReader implements RestPaymentTokensReaderInterface
 {

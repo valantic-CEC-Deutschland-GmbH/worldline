@@ -7,8 +7,8 @@ namespace ValanticSpryker\Zed\Worldline\Business\Logger;
 use Generated\Shared\Transfer\WorldlineDeleteTokenRequestTransfer;
 use Orm\Zed\Worldline\Persistence\VsyPaymentWorldlineTransactionStatusLog;
 use Orm\Zed\Worldline\Persistence\VsyWorldlineApiLog;
-use ValanticSpryker\Shared\Worldline\WorldlineConstants;
 use Spryker\Shared\Kernel\Transfer\TransferInterface;
+use ValanticSpryker\Shared\Worldline\WorldlineConstants;
 
 class DeleteTokenApiLogger implements WorldlineApiLoggerPluginInterface
 {

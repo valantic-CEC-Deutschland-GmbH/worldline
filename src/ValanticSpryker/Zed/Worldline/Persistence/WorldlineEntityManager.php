@@ -14,9 +14,9 @@ use Orm\Zed\Worldline\Persistence\VsyPaymentWorldlineTransactionStatusLog;
 use Orm\Zed\Worldline\Persistence\VsyWorldlineThreeDSecureResult;
 use Orm\Zed\Worldline\Persistence\VsyWorldlineToken;
 use Orm\Zed\Worldline\Persistence\VsyWorldlineTokenQuery;
-use ValanticSpryker\Zed\Worldline\Persistence\Mapper\WorldlinePersistenceMapperInterface;
 use Spryker\Zed\Kernel\Persistence\AbstractEntityManager;
 use Spryker\Zed\PropelOrm\Business\Runtime\ActiveQuery\Criteria;
+use ValanticSpryker\Zed\Worldline\Persistence\Mapper\WorldlinePersistenceMapperInterface;
 
 /**
  * @method \ValanticSpryker\Zed\Worldline\Persistence\WorldlinePersistenceFactory getFactory()

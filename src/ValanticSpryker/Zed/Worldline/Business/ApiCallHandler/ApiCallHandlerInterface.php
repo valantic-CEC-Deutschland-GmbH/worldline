@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace ValanticSpryker\Zed\Worldline\Business\ApiCallHandler;
 
 use Exception;
-use ValanticSpryker\Zed\Worldline\Business\Mapper\WorldlineMapperInterface;
 use Spryker\Shared\Kernel\Transfer\TransferInterface;
+use ValanticSpryker\Zed\Worldline\Business\Mapper\WorldlineMapperInterface;
 
 interface ApiCallHandlerInterface
 {

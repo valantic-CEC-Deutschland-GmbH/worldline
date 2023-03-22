@@ -10,9 +10,9 @@ use Orm\Zed\Worldline\Persistence\VsyPaymentWorldlineTransactionStatusLogQuery;
 use Orm\Zed\Worldline\Persistence\VsyWorldlineApiCallLogQuery;
 use Orm\Zed\Worldline\Persistence\VsyWorldlineRestReceiveLogQuery;
 use Orm\Zed\Worldline\Persistence\VsyWorldlineTokenQuery;
+use Spryker\Zed\Kernel\Persistence\AbstractPersistenceFactory;
 use ValanticSpryker\Zed\Worldline\Persistence\Mapper\WorldlinePersistenceMapper;
 use ValanticSpryker\Zed\Worldline\Persistence\Mapper\WorldlinePersistenceMapperInterface;
-use Spryker\Zed\Kernel\Persistence\AbstractPersistenceFactory;
 
 /**
  * @method \ValanticSpryker\Zed\Worldline\Persistence\WorldlineEntityManagerInterface getEntityManager()

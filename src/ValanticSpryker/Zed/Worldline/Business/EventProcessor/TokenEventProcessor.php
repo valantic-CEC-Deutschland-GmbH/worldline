@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace ValanticSpryker\Zed\Worldline\Business\EventProcessor;
 
 use Generated\Shared\Transfer\WebhookEventTransfer;
-use ValanticSpryker\Zed\Worldline\Business\Writer\WorldlineWriterInterface;
 use Spryker\Shared\Log\LoggerTrait;
+use ValanticSpryker\Zed\Worldline\Business\Writer\WorldlineWriterInterface;
 
 class TokenEventProcessor implements EventProcessorInterface
 {

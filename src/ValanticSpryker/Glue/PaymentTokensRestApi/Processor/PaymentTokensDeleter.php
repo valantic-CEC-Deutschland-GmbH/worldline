@@ -5,9 +5,9 @@ declare(strict_types = 1);
 namespace ValanticSpryker\Glue\PaymentTokensRestApi\Processor;
 
 use Generated\Shared\Transfer\WorldlineDeleteTokenRequestTransfer;
+use Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface;
 use ValanticSpryker\Client\PaymentTokens\PaymentTokensClientInterface;
 use ValanticSpryker\Glue\PaymentTokensRestApi\Processor\ResponseBuilder\PaymentTokensRestResponseBuilderInterface;
-use Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface;
 
 class PaymentTokensDeleter implements PaymentTokensDeleterInterface
 {

@@ -22,13 +22,13 @@ use Generated\Shared\Transfer\WorldlineThreeDSecureDataTransfer;
 use Generated\Shared\Transfer\WorldlineTokenEventDataTransfer;
 use Orm\Zed\Worldline\Persistence\VsyWorldlineRestLog;
 use Orm\Zed\Worldline\Persistence\VsyWorldlineRestReceiveLog;
+use Spryker\Shared\Log\LoggerTrait;
 use ValanticSpryker\Shared\Worldline\WorldlineConstants;
 use ValanticSpryker\Zed\Worldline\Business\Exception\MerchantReferenceNotSetException;
 use ValanticSpryker\Zed\Worldline\Business\Timestamp\WorldlineTimestampConverterInterface;
 use ValanticSpryker\Zed\Worldline\Persistence\WorldlineEntityManagerInterface;
 use ValanticSpryker\Zed\Worldline\Persistence\WorldlineQueryContainerInterface;
 use ValanticSpryker\Zed\Worldline\WorldlineConfig;
-use Spryker\Shared\Log\LoggerTrait;
 
 class WorldlineWriter implements WorldlineWriterInterface
 {

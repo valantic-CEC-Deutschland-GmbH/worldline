@@ -6,10 +6,6 @@ namespace ValanticSpryker\Zed\WorldlineWebhook\Communication\EventListener;
 
 use Generated\Shared\Transfer\WorldlineWebhookRequestTransfer;
 use Generated\Shared\Transfer\WorldlineWebhookResponseTransfer;
-use ValanticSpryker\Shared\WorldlineWebhook\WorldlineWebhookConstants;
-use ValanticSpryker\Zed\WorldlineWebhook\Business\WorldlineWebhookFacadeInterface;
-use ValanticSpryker\Zed\WorldlineWebhook\Communication\Transformer\TransformerInterface;
-use ValanticSpryker\Zed\WorldlineWebhook\WorldlineWebhookConfig;
 use Spryker\Service\UtilEncoding\UtilEncodingServiceInterface;
 use Spryker\Shared\Log\LoggerTrait;
 use Spryker\Zed\Api\Communication\Controller\AbstractApiController;
@@ -17,6 +13,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Throwable;
+use ValanticSpryker\Shared\WorldlineWebhook\WorldlineWebhookConstants;
+use ValanticSpryker\Zed\WorldlineWebhook\Business\WorldlineWebhookFacadeInterface;
+use ValanticSpryker\Zed\WorldlineWebhook\Communication\Transformer\TransformerInterface;
+use ValanticSpryker\Zed\WorldlineWebhook\WorldlineWebhookConfig;
 
 class WorldlineWebhookControllerEventListener implements WorldlineWebhookControllerEventListenerInterface
 {

@@ -6,13 +6,13 @@ namespace ValanticSpryker\Glue\PaymentTokensRestApi\Plugin;
 
 use Generated\Shared\Transfer\RestPaymentTokensAttributesTransfer;
 use Generated\Shared\Transfer\RouteAuthorizationConfigTransfer;
-use ValanticSpryker\Glue\PaymentTokensRestApi\PaymentTokensRestApiConfig;
 use Spryker\Glue\CustomersRestApi\CustomersRestApiConfig;
 use Spryker\Glue\GlueApplicationAuthorizationConnectorExtension\Dependency\Plugin\DefaultAuthorizationStrategyAwareResourceRoutePluginInterface;
 use Spryker\Glue\GlueApplicationExtension\Dependency\Plugin\ResourceRouteCollectionInterface;
 use Spryker\Glue\GlueApplicationExtension\Dependency\Plugin\ResourceRoutePluginInterface;
 use Spryker\Glue\GlueApplicationExtension\Dependency\Plugin\ResourceWithParentPluginInterface;
 use Spryker\Glue\Kernel\AbstractPlugin;
+use ValanticSpryker\Glue\PaymentTokensRestApi\PaymentTokensRestApiConfig;
 
 class PaymentTokensRestApiGlueResourceRoutePlugin extends AbstractPlugin implements ResourceRoutePluginInterface, ResourceWithParentPluginInterface, DefaultAuthorizationStrategyAwareResourceRoutePluginInterface
 {

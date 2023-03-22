@@ -6,8 +6,8 @@ namespace ValanticSpryker\Zed\Worldline\Business\Logger;
 
 use Orm\Zed\Worldline\Persistence\VsyPaymentWorldlineTransactionStatusLog;
 use Orm\Zed\Worldline\Persistence\VsyWorldlineApiLog;
-use ValanticSpryker\Zed\Worldline\WorldlineConfig;
 use Spryker\Shared\Kernel\Transfer\TransferInterface;
+use ValanticSpryker\Zed\Worldline\WorldlineConfig;
 
 class ApiSettingsLogger implements WorldlineApiLoggerPluginInterface
 {

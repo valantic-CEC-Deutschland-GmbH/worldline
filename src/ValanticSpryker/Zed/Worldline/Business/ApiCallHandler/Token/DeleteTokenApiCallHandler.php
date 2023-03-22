@@ -7,11 +7,11 @@ namespace ValanticSpryker\Zed\Worldline\Business\ApiCallHandler\Token;
 use Exception;
 use Generated\Shared\Transfer\WorldlineDeleteTokenRequestTransfer;
 use Generated\Shared\Transfer\WorldlineDeleteTokenResponseTransfer;
+use Spryker\Shared\Kernel\Transfer\TransferInterface;
 use ValanticSpryker\Zed\Worldline\Business\ApiCallHandler\AbstractApiCallHandler;
 use ValanticSpryker\Zed\Worldline\Business\Client\WorldlineClientInterface;
 use ValanticSpryker\Zed\Worldline\Business\Logger\WorldlineApiLoggerInterface;
 use ValanticSpryker\Zed\Worldline\Business\Mapper\WorldlineMapperInterface;
-use Spryker\Shared\Kernel\Transfer\TransferInterface;
 
 class DeleteTokenApiCallHandler extends AbstractApiCallHandler
 {

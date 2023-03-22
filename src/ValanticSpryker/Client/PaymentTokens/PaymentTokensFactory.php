@@ -4,10 +4,10 @@ declare(strict_types = 1);
 
 namespace ValanticSpryker\Client\PaymentTokens;
 
-use ValanticSpryker\Client\PaymentTokens\Zed\PaymentTokensStub;
-use ValanticSpryker\Client\PaymentTokens\Zed\PaymentTokensStubInterface;
 use Spryker\Client\Kernel\AbstractFactory;
 use Spryker\Client\ZedRequest\ZedRequestClientInterface;
+use ValanticSpryker\Client\PaymentTokens\Zed\PaymentTokensStub;
+use ValanticSpryker\Client\PaymentTokens\Zed\PaymentTokensStubInterface;
 
 class PaymentTokensFactory extends AbstractFactory
 {

@@ -9,8 +9,8 @@ use Generated\Shared\Transfer\WorldlineCreateHostedCheckoutResponseTransfer;
 use Generated\Shared\Transfer\WorldlineCreateHostedCheckoutTransfer;
 use Orm\Zed\Worldline\Persistence\VsyPaymentWorldlineTransactionStatusLog;
 use Orm\Zed\Worldline\Persistence\VsyWorldlineApiLog;
-use ValanticSpryker\Shared\Worldline\WorldlineConstants;
 use Spryker\Shared\Kernel\Transfer\TransferInterface;
+use ValanticSpryker\Shared\Worldline\WorldlineConstants;
 
 class CreateHostedCheckoutApiLogger implements WorldlineApiLoggerPluginInterface
 {

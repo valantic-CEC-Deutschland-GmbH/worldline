@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace ValanticSpryker\Glue\PaymentTokensRestApi\Processor\RelationshipExpander;
 
-use ValanticSpryker\Glue\PaymentTokensRestApi\Processor\Reader\RestPaymentTokensReaderInterface;
 use Spryker\Glue\GlueApplication\Rest\Request\Data\RestRequestInterface;
+use ValanticSpryker\Glue\PaymentTokensRestApi\Processor\Reader\RestPaymentTokensReaderInterface;
 
 class PaymentTokensByCustomerReferenceRelationshipExpander implements PaymentTokensByCustomerReferenceRelationshipExpanderInterface
 {

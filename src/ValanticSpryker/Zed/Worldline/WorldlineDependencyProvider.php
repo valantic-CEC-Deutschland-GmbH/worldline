@@ -4,13 +4,13 @@ declare(strict_types = 1);
 
 namespace ValanticSpryker\Zed\Worldline;
 
-use Spryker\Zed\Customer\Business\CustomerFacadeInterface;
-use Spryker\Zed\Oms\Business\OmsFacadeInterface;
-use Spryker\Zed\Payment\Business\PaymentFacadeInterface;
 use Spryker\Service\UtilDateTime\UtilDateTimeServiceInterface;
 use Spryker\Service\UtilEncoding\UtilEncodingServiceInterface;
+use Spryker\Zed\Customer\Business\CustomerFacadeInterface;
 use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Zed\Kernel\Container;
+use Spryker\Zed\Oms\Business\OmsFacadeInterface;
+use Spryker\Zed\Payment\Business\PaymentFacadeInterface;
 use Spryker\Zed\Router\Business\RouterFacadeInterface;
 use Spryker\Zed\Sales\Business\SalesFacadeInterface;
 

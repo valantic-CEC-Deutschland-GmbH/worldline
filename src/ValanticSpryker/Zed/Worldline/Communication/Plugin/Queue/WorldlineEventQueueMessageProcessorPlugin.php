@@ -5,9 +5,9 @@ declare(strict_types = 1);
 namespace ValanticSpryker\Zed\Worldline\Communication\Plugin\Queue;
 
 use Generated\Shared\Transfer\QueueReceiveMessageTransfer;
-use ValanticSpryker\Zed\WorldlineWebhook\Communication\Plugin\Queue\WorldlineQueueMessageProcessorPluginInterface;
 use Spryker\Shared\Log\LoggerTrait;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
+use ValanticSpryker\Zed\WorldlineWebhook\Communication\Plugin\Queue\WorldlineQueueMessageProcessorPluginInterface;
 
 /**
  * @method \ValanticSpryker\Zed\Worldline\Business\WorldlineFacadeInterface getFacade()

@@ -117,6 +117,7 @@ class TokenReader implements TokenReaderInterface
         if ($paymentMethodsFound->count() === 1) {
             return $paymentMethodsFound->getArrayCopy()[0];
         }
+
         return null;
     }
 }

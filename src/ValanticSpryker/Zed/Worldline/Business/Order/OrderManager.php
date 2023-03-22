@@ -10,9 +10,9 @@ use Generated\Shared\Transfer\SaveOrderTransfer;
 use Generated\Shared\Transfer\WorldlinePaymentHostedCheckoutTransfer;
 use Orm\Zed\Worldline\Persistence\VsyPaymentWorldline;
 use Orm\Zed\Worldline\Persistence\VsyPaymentWorldlineHostedCheckout;
+use Spryker\Zed\Kernel\Persistence\EntityManager\TransactionTrait;
 use ValanticSpryker\Shared\Worldline\WorldlineConstants;
 use ValanticSpryker\Zed\Worldline\WorldlineConfig;
-use Spryker\Zed\Kernel\Persistence\EntityManager\TransactionTrait;
 
 class OrderManager implements OrderManagerInterface
 {

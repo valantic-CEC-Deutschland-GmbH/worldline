@@ -4,8 +4,6 @@ declare(strict_types = 1);
 
 namespace ValanticSpryker\Zed\Worldline\Business\Filter;
 
-use ArrayObject;
-use Generated\Shared\Transfer\CustomerTransfer;
 use Generated\Shared\Transfer\PaymentMethodsTransfer;
 use Generated\Shared\Transfer\PaymentMethodTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
@@ -13,7 +11,6 @@ use Generated\Shared\Transfer\WorldlineGetPaymentProductsRequestTransfer;
 use Spryker\Shared\Kernel\Store;
 use ValanticSpryker\Zed\Worldline\Business\ApiCallHandler\ApiCallHandlerInterface;
 use ValanticSpryker\Zed\Worldline\Business\Mapper\PaymentProductsMapperInterface;
-use ValanticSpryker\Zed\Worldline\Persistence\WorldlineQueryContainerInterface;
 use ValanticSpryker\Zed\Worldline\WorldlineConfig;
 
 class PaymentMethodsFilter implements PaymentMethodsFilterInterface

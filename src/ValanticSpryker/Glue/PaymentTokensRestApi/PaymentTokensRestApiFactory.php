@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace ValanticSpryker\Glue\PaymentTokensRestApi;
 
+use Spryker\Glue\Kernel\AbstractFactory;
 use ValanticSpryker\Client\PaymentTokens\PaymentTokensClientInterface;
 use ValanticSpryker\Glue\PaymentTokensRestApi\Processor\Mapper\RestPaymentTokensMapper;
 use ValanticSpryker\Glue\PaymentTokensRestApi\Processor\Mapper\RestPaymentTokensMapperInterface;
@@ -17,7 +18,6 @@ use ValanticSpryker\Glue\PaymentTokensRestApi\Processor\ResponseBuilder\PaymentT
 use ValanticSpryker\Glue\PaymentTokensRestApi\Processor\ResponseBuilder\PaymentTokensRestResponseBuilderInterface;
 use ValanticSpryker\Glue\PaymentTokensRestApi\Validation\RestApiError;
 use ValanticSpryker\Glue\PaymentTokensRestApi\Validation\RestApiErrorInterface;
-use Spryker\Glue\Kernel\AbstractFactory;
 
 class PaymentTokensRestApiFactory extends AbstractFactory
 {

@@ -6,8 +6,8 @@ namespace ValanticSpryker\Zed\Worldline;
 
 use Generated\Shared\Transfer\PaymentTransfer;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
-use ValanticSpryker\Shared\Worldline\WorldlineConstants;
 use Spryker\Zed\Kernel\AbstractBundleConfig;
+use ValanticSpryker\Shared\Worldline\WorldlineConstants;
 
 class WorldlineConfig extends AbstractBundleConfig
 {

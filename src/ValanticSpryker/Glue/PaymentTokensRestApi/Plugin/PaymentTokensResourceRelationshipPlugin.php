@@ -4,10 +4,10 @@ declare(strict_types = 1);
 
 namespace ValanticSpryker\Glue\PaymentTokensRestApi\Plugin;
 
-use ValanticSpryker\Glue\PaymentTokensRestApi\PaymentTokensRestApiConfig;
 use Spryker\Glue\GlueApplication\Rest\Request\Data\RestRequestInterface;
 use Spryker\Glue\GlueApplicationExtension\Dependency\Plugin\ResourceRelationshipPluginInterface;
 use Spryker\Glue\Kernel\AbstractPlugin;
+use ValanticSpryker\Glue\PaymentTokensRestApi\PaymentTokensRestApiConfig;
 
 /**
  * @method \ValanticSpryker\Glue\PaymentTokensRestApi\PaymentTokensRestApiFactory getFactory()

@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace ValanticSpryker\Glue\PaymentTokensRestApi;
 
-use ValanticSpryker\Client\PaymentTokens\PaymentTokensClientInterface;
 use Spryker\Glue\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Glue\Kernel\Container;
+use ValanticSpryker\Client\PaymentTokens\PaymentTokensClientInterface;
 
 class PaymentTokensRestApiDependencyProvider extends AbstractBundleDependencyProvider
 {

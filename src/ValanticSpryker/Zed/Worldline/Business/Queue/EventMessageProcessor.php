@@ -9,14 +9,14 @@ use Generated\Shared\Transfer\QueueReceiveMessageTransfer;
 use Generated\Shared\Transfer\WebhookEventTransfer;
 use Ingenico\Connect\Sdk\Domain\Webhooks\WebhooksEvent;
 use Ingenico\Connect\Sdk\Webhooks\WebhooksHelper;
-use ValanticSpryker\Zed\Worldline\Business\Mapper\WebhookEventMapperInterface;
-use ValanticSpryker\Zed\Worldline\Business\Writer\WorldlineWriterInterface;
-use ValanticSpryker\Zed\Worldline\WorldlineConfig;
-use ValanticSpryker\Zed\WorldlineWebhook\WorldlineWebhookConfig;
 use Spryker\Service\UtilEncoding\UtilEncodingServiceInterface;
 use Spryker\Shared\Log\LoggerTrait;
 use Spryker\Zed\Event\Business\Exception\MessageTypeNotFoundException;
 use Throwable;
+use ValanticSpryker\Zed\Worldline\Business\Mapper\WebhookEventMapperInterface;
+use ValanticSpryker\Zed\Worldline\Business\Writer\WorldlineWriterInterface;
+use ValanticSpryker\Zed\Worldline\WorldlineConfig;
+use ValanticSpryker\Zed\WorldlineWebhook\WorldlineWebhookConfig;
 
 class EventMessageProcessor implements EventMessageProcessorInterface
 {

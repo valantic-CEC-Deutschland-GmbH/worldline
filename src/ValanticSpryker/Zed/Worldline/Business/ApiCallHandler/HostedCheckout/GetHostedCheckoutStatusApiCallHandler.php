@@ -7,11 +7,11 @@ namespace ValanticSpryker\Zed\Worldline\Business\ApiCallHandler\HostedCheckout;
 use Exception;
 use Generated\Shared\Transfer\WorldlineGetHostedCheckoutStatusResponseTransfer;
 use Generated\Shared\Transfer\WorldlineGetHostedCheckoutStatusTransfer;
+use Spryker\Shared\Kernel\Transfer\TransferInterface;
 use ValanticSpryker\Zed\Worldline\Business\ApiCallHandler\AbstractApiCallHandler;
 use ValanticSpryker\Zed\Worldline\Business\Client\WorldlineClientInterface;
 use ValanticSpryker\Zed\Worldline\Business\Logger\WorldlineApiLoggerInterface;
 use ValanticSpryker\Zed\Worldline\Business\Mapper\HostedCheckoutMapperInterface;
-use Spryker\Shared\Kernel\Transfer\TransferInterface;
 
 class GetHostedCheckoutStatusApiCallHandler extends AbstractApiCallHandler
 {

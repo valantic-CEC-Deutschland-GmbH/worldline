@@ -6,11 +6,11 @@ namespace ValanticSpryker\Zed\WorldlineWebhook\Communication\Transformer;
 
 use Generated\Shared\Transfer\WorldlineWebhookRequestTransfer;
 use Generated\Shared\Transfer\WorldlineWebhookResponseTransfer;
+use Spryker\Service\UtilEncoding\UtilEncodingServiceInterface;
+use Symfony\Component\HttpFoundation\Response;
 use ValanticSpryker\Shared\WorldlineWebhook\WorldlineWebhookConstants;
 use ValanticSpryker\Zed\WorldlineWebhook\Communication\Formatter\FormatterInterface;
 use ValanticSpryker\Zed\WorldlineWebhook\WorldlineWebhookConfig;
-use Spryker\Service\UtilEncoding\UtilEncodingServiceInterface;
-use Symfony\Component\HttpFoundation\Response;
 
 class Transformer implements TransformerInterface
 {

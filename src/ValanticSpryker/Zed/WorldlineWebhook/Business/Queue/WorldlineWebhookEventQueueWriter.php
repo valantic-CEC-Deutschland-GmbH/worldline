@@ -6,8 +6,8 @@ namespace ValanticSpryker\Zed\WorldlineWebhook\Business\Queue;
 
 use Generated\Shared\Transfer\QueueSendMessageTransfer;
 use Generated\Shared\Transfer\WorldlineWebhookRequestTransfer;
-use ValanticSpryker\Shared\WorldlineWebhook\WorldlineWebhookConstants;
 use Spryker\Client\Queue\QueueClientInterface;
+use ValanticSpryker\Shared\WorldlineWebhook\WorldlineWebhookConstants;
 
 class WorldlineWebhookEventQueueWriter implements WorldlineWebhookEventQueueWriterInterface
 {

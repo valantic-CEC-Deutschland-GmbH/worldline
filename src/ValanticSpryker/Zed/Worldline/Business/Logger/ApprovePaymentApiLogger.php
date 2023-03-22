@@ -8,10 +8,10 @@ use Generated\Shared\Transfer\WorldlineApprovePaymentRequestTransfer;
 use Generated\Shared\Transfer\WorldlineApprovePaymentResponseTransfer;
 use Orm\Zed\Worldline\Persistence\VsyPaymentWorldlineTransactionStatusLog;
 use Orm\Zed\Worldline\Persistence\VsyWorldlineApiLog;
+use Spryker\Shared\Kernel\Transfer\TransferInterface;
 use ValanticSpryker\Shared\Worldline\WorldlineConstants;
 use ValanticSpryker\Zed\Worldline\Business\Exception\ApprovePaymentFailedException;
 use ValanticSpryker\Zed\Worldline\Business\Timestamp\WorldlineTimestampConverterInterface;
-use Spryker\Shared\Kernel\Transfer\TransferInterface;
 
 class ApprovePaymentApiLogger implements WorldlineApiLoggerPluginInterface
 {

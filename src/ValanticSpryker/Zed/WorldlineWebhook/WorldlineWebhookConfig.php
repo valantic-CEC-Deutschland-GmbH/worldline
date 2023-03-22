@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace ValanticSpryker\Zed\WorldlineWebhook;
 
-use ValanticSpryker\Shared\WorldlineWebhook\WorldlineWebhookConstants;
 use Spryker\Zed\Kernel\AbstractBundleConfig;
+use ValanticSpryker\Shared\WorldlineWebhook\WorldlineWebhookConstants;
 
 class WorldlineWebhookConfig extends AbstractBundleConfig
 {

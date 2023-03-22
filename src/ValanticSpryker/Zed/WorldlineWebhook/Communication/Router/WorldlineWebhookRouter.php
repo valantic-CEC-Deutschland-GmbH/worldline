@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace ValanticSpryker\Zed\WorldlineWebhook\Communication\Router;
 
-use ValanticSpryker\Zed\WorldlineWebhook\WorldlineWebhookConfig;
 use Spryker\Zed\Api\Communication\Controller\AbstractApiController;
 use Spryker\Zed\Kernel\ClassResolver\Controller\ControllerResolver;
 use Spryker\Zed\Kernel\Communication\BundleControllerAction;
@@ -14,7 +13,7 @@ use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RouterInterface;
 use TypeError;
-use ValanticSpryker\Zed\FirstSpiritApi\FirstSpiritApiConfig;
+use ValanticSpryker\Zed\WorldlineWebhook\WorldlineWebhookConfig;
 
 class WorldlineWebhookRouter implements RouterInterface
 {

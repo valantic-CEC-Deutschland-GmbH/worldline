@@ -5,14 +5,14 @@ declare(strict_types = 1);
 namespace ValanticSpryker\Zed\Worldline\Communication;
 
 use Generated\Shared\Transfer\OrderTransfer;
-use ValanticSpryker\Zed\Worldline\Communication\Form\PaymentTokenDeleteForm;
-use ValanticSpryker\Zed\Worldline\Communication\Table\TransactionStatusLogTable;
-use ValanticSpryker\Zed\Worldline\WorldlineDependencyProvider;
 use Spryker\Service\UtilDateTime\UtilDateTimeServiceInterface;
 use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
 use Spryker\Zed\Router\Business\RouterFacadeInterface;
 use Spryker\Zed\Sales\Business\SalesFacadeInterface;
 use Symfony\Component\Form\FormInterface;
+use ValanticSpryker\Zed\Worldline\Communication\Form\PaymentTokenDeleteForm;
+use ValanticSpryker\Zed\Worldline\Communication\Table\TransactionStatusLogTable;
+use ValanticSpryker\Zed\Worldline\WorldlineDependencyProvider;
 
 /**
  * @method \ValanticSpryker\Zed\Worldline\Persistence\WorldlineQueryContainerInterface getQueryContainer()

@@ -4,6 +4,9 @@ declare(strict_types = 1);
 
 namespace ValanticSpryker\Zed\WorldlineWebhook\Communication;
 
+use Spryker\Service\UtilEncoding\UtilEncodingServiceInterface;
+use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
+use Symfony\Component\Routing\RouterInterface;
 use ValanticSpryker\Zed\WorldlineWebhook\Communication\EventListener\WorldlineWebhookControllerEventListener;
 use ValanticSpryker\Zed\WorldlineWebhook\Communication\EventListener\WorldlineWebhookControllerEventListenerInterface;
 use ValanticSpryker\Zed\WorldlineWebhook\Communication\Formatter\FormatterInterface;
@@ -12,9 +15,6 @@ use ValanticSpryker\Zed\WorldlineWebhook\Communication\Router\WorldlineWebhookRo
 use ValanticSpryker\Zed\WorldlineWebhook\Communication\Transformer\Transformer;
 use ValanticSpryker\Zed\WorldlineWebhook\Communication\Transformer\TransformerInterface;
 use ValanticSpryker\Zed\WorldlineWebhook\WorldlineWebhookDependencyProvider;
-use Spryker\Service\UtilEncoding\UtilEncodingServiceInterface;
-use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
-use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @method \ValanticSpryker\Zed\WorldlineWebhook\Business\WorldlineWebhookFacadeInterface getFacade()

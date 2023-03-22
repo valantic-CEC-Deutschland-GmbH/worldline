@@ -6,8 +6,8 @@ namespace ValanticSpryker\Zed\Worldline\Business\Oms\Command\Saver;
 
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\WorldlineGetHostedCheckoutStatusResponseTransfer;
-use ValanticSpryker\Zed\Worldline\Business\Writer\WorldlineWriterInterface;
 use Spryker\Shared\Kernel\Transfer\TransferInterface;
+use ValanticSpryker\Zed\Worldline\Business\Writer\WorldlineWriterInterface;
 
 class GetHostedCheckoutStatusCommandSaver implements WorldlineCommandSaverInterface
 {

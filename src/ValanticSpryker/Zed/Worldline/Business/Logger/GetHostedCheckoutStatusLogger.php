@@ -8,9 +8,9 @@ use Generated\Shared\Transfer\WorldlineGetHostedCheckoutStatusResponseTransfer;
 use Generated\Shared\Transfer\WorldlineGetHostedCheckoutStatusTransfer;
 use Orm\Zed\Worldline\Persistence\VsyPaymentWorldlineTransactionStatusLog;
 use Orm\Zed\Worldline\Persistence\VsyWorldlineApiLog;
+use Spryker\Shared\Kernel\Transfer\TransferInterface;
 use ValanticSpryker\Shared\Worldline\WorldlineConstants;
 use ValanticSpryker\Zed\Worldline\Business\Timestamp\WorldlineTimestampConverterInterface;
-use Spryker\Shared\Kernel\Transfer\TransferInterface;
 
 class GetHostedCheckoutStatusLogger implements WorldlineApiLoggerPluginInterface
 {

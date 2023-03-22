@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace ValanticSpryker\Zed\Worldline\Communication\Controller;
 
 use Generated\Shared\Transfer\WorldlineDeleteTokenRequestTransfer;
-use Spryker\Shared\Customer\CustomerConstants;
 use Spryker\Service\UtilText\Model\Url\Url;
+use Spryker\Shared\Customer\CustomerConstants;
 use Spryker\Zed\Kernel\Communication\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;

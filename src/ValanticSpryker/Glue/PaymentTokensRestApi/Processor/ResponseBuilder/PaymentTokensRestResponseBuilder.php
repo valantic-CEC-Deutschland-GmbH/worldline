@@ -7,13 +7,13 @@ namespace ValanticSpryker\Glue\PaymentTokensRestApi\Processor\ResponseBuilder;
 use Generated\Shared\Transfer\RestPaymentTokensAttributesTransfer;
 use Generated\Shared\Transfer\WorldlineDeleteTokenResponseTransfer;
 use Generated\Shared\Transfer\WorldlinePaymentTokensResponseTransfer;
-use ValanticSpryker\Glue\PaymentTokensRestApi\PaymentTokensRestApiConfig;
-use ValanticSpryker\Glue\PaymentTokensRestApi\Processor\Mapper\RestPaymentTokensMapperInterface;
-use ValanticSpryker\Glue\PaymentTokensRestApi\Validation\RestApiErrorInterface;
 use Spryker\Glue\GlueApplication\Rest\JsonApi\RestResourceBuilderInterface;
 use Spryker\Glue\GlueApplication\Rest\JsonApi\RestResourceInterface;
 use Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface;
 use Symfony\Component\HttpFoundation\Response;
+use ValanticSpryker\Glue\PaymentTokensRestApi\PaymentTokensRestApiConfig;
+use ValanticSpryker\Glue\PaymentTokensRestApi\Processor\Mapper\RestPaymentTokensMapperInterface;
+use ValanticSpryker\Glue\PaymentTokensRestApi\Validation\RestApiErrorInterface;
 
 class PaymentTokensRestResponseBuilder implements PaymentTokensRestResponseBuilderInterface
 {

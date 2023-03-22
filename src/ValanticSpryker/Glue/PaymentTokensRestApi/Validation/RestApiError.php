@@ -7,9 +7,9 @@ namespace ValanticSpryker\Glue\PaymentTokensRestApi\Validation;
 use Generated\Shared\Transfer\RestErrorMessageTransfer;
 use Generated\Shared\Transfer\WorldlineDeleteTokenResponseTransfer;
 use Generated\Shared\Transfer\WorldlinePaymentTokensResponseTransfer;
-use ValanticSpryker\Glue\PaymentTokensRestApi\PaymentTokensRestApiConfig;
 use Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface;
 use Symfony\Component\HttpFoundation\Response;
+use ValanticSpryker\Glue\PaymentTokensRestApi\PaymentTokensRestApiConfig;
 
 class RestApiError implements RestApiErrorInterface
 {
