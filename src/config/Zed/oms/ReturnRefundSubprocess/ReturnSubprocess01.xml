@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<statemachine
+    xmlns="http://static.spryker.com"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://static.spryker.com http://static.spryker.com/oms-01.xsd">
+
+    <process name="Return">
+        <states>
+            <state name="waiting for return"/>
+            <state name="returned"/>
+            <state name="return rejected"/>
+        </states>
+
+        <transitions>
+            <transition condition="Oms/IsOrderItemReturned">
+                <source>waiting for return</source>
+                <target>returned</target>
+            </transition>
+
+            <transition condition="Oms/IsOrderItemReturnRejected">
+                <source>waiting for return</source>
+                <target>return rejected</target>
+            </transition>
+        </transitions>
+
+        <events>
+            <event name="return" command="Oms/ReturnOrderItem"/>
+        </events>
+    </process>
+</statemachine>

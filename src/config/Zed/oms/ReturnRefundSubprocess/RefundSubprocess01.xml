@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<statemachine
+    xmlns="http://static.spryker.com"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://static.spryker.com http://static.spryker.com/oms-01.xsd">
+
+    <process name="Refund">
+        <states>
+            <state name="refund pending"/>
+            <state name="wait for refund status"/>
+            <state name="refunded"/>
+            <state name="refund failed"/>
+            <state name="refund exported"/>
+        </states>
+
+        <transitions>
+            <transition condition="Oms/IsRefundReceived">
+                <source>returned</source>
+                <target>refund pending</target>
+            </transition>
+
+            <transition>
+                <source>refund pending</source>
+                <target>wait for refund status</target>
+                <event>refund</event>
+            </transition>
+
+            <transition condition="Worldline/IsRefunded">
+                <source>wait for refund status</source>
+                <target>refunded</target>
+            </transition>
+
+            <transition condition="Oms/IsRefundExported">
+                <source>refunded</source>
+                <target>refund exported</target>
+                <event>export refund</event>
+            </transition>
+
+            <transition condition="Worldline/IsRefundFailed">
+                <source>wait for refund status</source>
+                <target>refund failed</target>
+            </transition>
+
+            <transition>
+                <source>refund failed</source>
+                <target>refund pending</target>
+            </transition>
+        </transitions>
+
+        <events>
+            <event name="refund" manual="true" command="Worldline/Refund"/>
+            <event name="export refund" command="Oms/ExportRefund"/>
+            <event name="refund manual" command="Oms/RefundOrder" manual="true"/>
+        </events>
+    </process>
+</statemachine>

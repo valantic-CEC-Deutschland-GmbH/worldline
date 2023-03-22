@@ -261,11 +261,11 @@ Note:
 
 ##### Available configurations for Worldline PSP integration:
 
-      $config[WorldlineConstants::WORLDLINE_API_KEY_ID]
+    $config[WorldlineConstants::WORLDLINE_API_KEY_ID]
     $config[WorldlineConstants::WORLDLINE_API_SECRET]
     $config[WorldlineConstants::WORLDLINE_API_ENDPOINT]
     $config[WorldlineConstants::WORLDLINE_API_INTEGRATOR]
-    $config[WorldlineConstants::WORLDLINE_API_LR_MERCHANT_ID]
+    $config[WorldlineConstants::WORLDLINE_API_MERCHANT_ID]
     $config[WorldlineConstants::WORLDLINE_API_COUNTRY_ISO2CODE]
     $config[WorldlineConstants::WORLDLINE_WEBHOOK_KEY]
     $config[WorldlineConstants::WORLDLINE_WEBHOOK_SECRET]

@@ -71,31 +71,48 @@ extend your Project config with the following configuration
 
 ###### 1. Add Queue configuration for webhook events
 
+in config/shared/config_default.php
+
       use ValanticSpryker\Shared\Worldline\WorldlineConstants;
       use ValanticSpryker\Zed\Worldline\WorldlineConfig;
       
       $config[QueueConstants::QUEUE_ADAPTER_CONFIGURATION] = [
-         EventConstants::EVENT_QUEUE => [
-             QueueConfig::CONFIG_QUEUE_ADAPTER => RabbitMqAdapter::class,
-            QueueConfig::CONFIG_MAX_WORKER_NUMBER => 5,
-         ],
-         WorldlineWebhookConstants::WORLDLINE_WEBHOOK_EVENT_QUEUE_NAME => [
+        .
+        .
+        WorldlineWebhookConstants::WORLDLINE_WEBHOOK_EVENT_QUEUE_NAME => [
             QueueConfig::CONFIG_QUEUE_ADAPTER => RabbitMqAdapter::class,
             QueueConfig::CONFIG_MAX_WORKER_NUMBER => 1,
-         ],
+        ],
+        .
+        .
       ];
 
+in Pyz/Zed/Queue/QueueConfig.php
+
+    /**
+     * @return array
+     */
+    protected function getQueueReceiverOptions(): array
+    {
+        return [
+            .
+            .
+            WorldlineWebhookConstants::WORLDLINE_WEBHOOK_EVENT_QUEUE_NAME => [
+                static::RABBITMQ => $this->getRabbitMqQueueConsumerOptions(),
+            ],
+            .
+            .
+        ];
+    }
+
 ###### 2. Add OMS Mappings (Example)
-      
+    
+in config/shared/config_default.php      
+
       // ----------------------------------------------------------------------------
       // ------------------------------ OMS -----------------------------------------
       // ----------------------------------------------------------------------------
 
-      $config[OmsConstants::ACTIVE_PROCESSES] = [
-         'DelayedPayment01',
-         'Payment01',
-         'NoPayment01',
-      ];
       
       $config[SalesConstants::PAYMENT_METHOD_STATEMACHINE_MAPPING] = [
          WorldlineConfig::PAYMENT_METHOD_CREDIT_CARD_VISA => 'DelayedPayment01',
@@ -105,6 +122,24 @@ extend your Project config with the following configuration
          CheckoutRestApiConfig::LR_INTERNAL_PAYMENT_METHOD_CASH_ON_DELIVERY => 'NoPayment01',
          CheckoutRestApiConfig::LR_INTERNAL_PAYMENT_METHOD_INVOICE => 'NoPayment01',
       ];
+
+in config/shared/common/config_oms-development
+
+    $config[SalesConstants::PAYMENT_METHOD_STATEMACHINE_MAPPING] = array_replace(
+        $config[SalesConstants::PAYMENT_METHOD_STATEMACHINE_MAPPING],
+        [
+            DummyPaymentConfig::PAYMENT_METHOD_INVOICE => 'DummyPayment01',
+            DummyPaymentConfig::PAYMENT_METHOD_CREDIT_CARD => 'DummyPayment01',
+            DummyMarketplacePaymentConfig::PAYMENT_METHOD_DUMMY_MARKETPLACE_PAYMENT_INVOICE => 'MarketplacePayment01',
+            NopaymentConfig::PAYMENT_PROVIDER_NAME => 'Nopayment01',
+            GiftCardConfig::PROVIDER_NAME => 'DummyPayment01',
+            WorldlineConfig::PAYMENT_METHOD_CREDIT_CARD_VISA => 'DelayedPayment01',
+            WorldlineConfig::PAYMENT_METHOD_CREDIT_CARD_MASTER_CARD => 'DelayedPayment01',
+            WorldlineConfig::PAYMENT_METHOD_CREDIT_CARD_AMERICAN_EXPRESS => 'DelayedPayment01',
+            WorldlineConfig::PAYMENT_METHOD_PAYPAL => 'DelayedPayment01',
+        ],
+    );
+
       
 ###### 3. Configure Worldline Connector
 
@@ -266,7 +301,7 @@ And in \Pyz\Zed\Router\RouterDependencyProvider
         ];
     }
 
-###### 8. Register Queue Procesor Plugin
+###### 8. Register Queue Processor Plugin
 
 In \Pyz\Zed\Queue\QueueDependencyProvider
 
@@ -284,6 +319,493 @@ In \Pyz\Zed\Queue\QueueDependencyProvider
             .
             .
         ];
+    }
+
+###### 9. Add Worldline payment methods
+
+In \Pyz\Glue\CheckoutRestApi\CheckoutRestApiConfig
+
+    private const WORLDLINE_PAYMENT_PROVIDER_NAME = 'Worldline';
+
+    /**
+     * @uses \Pyz\Shared\Worldline\WorldlineConfig::PAYMENT_METHOD_NAME_CREDIT_CARD_VISA
+     *
+     * @var string
+     */
+    public const WORLDLINE_PAYMENT_METHOD_NAME_CREDIT_CARD_VISA = 'Visa';
+
+    /**
+     * @uses \Pyz\Shared\Worldline\WorldlineConfig::PAYMENT_METHOD_NAME_CREDIT_CARD_MASTER_CARD
+     *
+     * @var string
+     */
+    public const WORLDLINE_PAYMENT_METHOD_NAME_CREDIT_CARD_MASTER_CARD = 'Master Card';
+
+    /**
+     * @uses \Pyz\Shared\Worldline\WorldlineConfig::PAYMENT_METHOD_NAME_CREDIT_CARD_AMERICAN_EXPRESS
+     *
+     * @var string
+     */
+    public const WORLDLINE_PAYMENT_METHOD_NAME_CREDIT_CARD_AMERICAN_EXPRESS = 'American Express';
+
+    /**
+     * @uses \Pyz\Shared\Worldline\WorldlineConfig::PAYMENT_METHOD_NAME_PAYPAL
+     *
+     * @var string
+     */
+    public const WORLDLINE_PAYMENT_METHOD_NAME_PAYPAL = 'paypal';
+
+    /**
+     * @uses \Pyz\Shared\Worldline\WorldlineConfig::::PAYMENT_METHOD_CREDIT_CARD_VISA
+     *
+     * @var string
+     */
+    public const WORLDLINE_PAYMENT_METHOD_CREDIT_CARD_VISA = 'worldlineCreditCardVisa';
+
+    /**
+     * @uses \Pyz\Shared\Worldline\WorldlineConfig::::PAYMENT_METHOD_CREDIT_CARD_MASTER_CARD
+     *
+     * @var string
+     */
+    public const WORLDLINE_PAYMENT_METHOD_CREDIT_CARD_MASTER_CARD = 'worldlineCreditCardMasterCard';
+
+    /**
+     * @uses \Pyz\Shared\Worldline\WorldlineConfig::::PAYMENT_METHOD_CREDIT_CARD_AMERICAN_EXPRESS
+     *
+     * @var string
+     */
+    public const WORLDLINE_PAYMENT_METHOD_CREDIT_CARD_AMERICAN_EXPRESS = 'worldlineCreditCardAmericanExpress';
+
+    /**
+     * @uses \Pyz\Shared\Worldline\WorldlineConfig::::PAYMENT_METHOD_PAYPAL
+     *
+     * @var string
+     */
+    public const WORLDLINE_PAYMENT_METHOD_PAYPAL = 'worldlinePaypal';
+
+    /**
+     * @return array<array<string>>
+     */
+    public function getPaymentProviderMethodToStateMachineMapping(): array
+    {
+        return [
+            .
+            .
+            self::WORLDLINE_PAYMENT_PROVIDER_NAME => [
+                static::WORLDLINE_PAYMENT_METHOD_NAME_CREDIT_CARD_VISA => static::WORLDLINE_PAYMENT_METHOD_CREDIT_CARD_VISA,
+                static::WORLDLINE_PAYMENT_METHOD_NAME_CREDIT_CARD_MASTER_CARD => static::WORLDLINE_PAYMENT_METHOD_CREDIT_CARD_MASTER_CARD,
+                static::WORLDLINE_PAYMENT_METHOD_NAME_CREDIT_CARD_AMERICAN_EXPRESS => static::WORLDLINE_PAYMENT_METHOD_CREDIT_CARD_AMERICAN_EXPRESS,
+                static::WORLDLINE_PAYMENT_METHOD_NAME_PAYPAL => static::WORLDLINE_PAYMENT_METHOD_PAYPAL,
+            ],
+            .
+            .
+        ];
+    }
+
+Add required fields in \Pyz\Glue\CheckoutRestApi
+
+    /**
+     * @var array<string, array<string>>
+     */
+    protected const PAYMENT_METHOD_REQUIRED_FIELDS = [
+        'dummyPaymentInvoice' => ['dummyPaymentInvoice.dateOfBirth'],
+        'dummyPaymentCreditCard' => [
+            'dummyPaymentCreditCard.cardType',
+            'dummyPaymentCreditCard.cardNumber',
+            'dummyPaymentCreditCard.nameOnCard',
+            'dummyPaymentCreditCard.cardExpiresMonth',
+            'dummyPaymentCreditCard.cardExpiresYear',
+            'dummyPaymentCreditCard.cardSecurityCode',
+        ],
+        WorldlineConfig::PAYMENT_METHOD_CREDIT_CARD_VISA => [
+            'paymentHostedCheckout.returnUrl',
+            'paymentHostedCheckout.customerIpAddress',
+            'paymentHostedCheckout.customerSelectedLocale',
+            'paymentHostedCheckout.customerTimezone',
+            'paymentHostedCheckout.customerUserAgent',
+            'paymentHostedCheckout.customerColorDepth',
+            'paymentHostedCheckout.customerJavaEnabled',
+            'paymentHostedCheckout.customerScreenHeight',
+            'paymentHostedCheckout.customerScreenWidth',
+            'paymentHostedCheckout.customerBrowserLocale',
+            'paymentHostedCheckout.customerTimezoneOffset',
+        ],
+        WorldlineConfig::PAYMENT_METHOD_CREDIT_CARD_MASTER_CARD => [
+            'paymentHostedCheckout.returnUrl',
+            'paymentHostedCheckout.customerIpAddress',
+            'paymentHostedCheckout.customerSelectedLocale',
+            'paymentHostedCheckout.customerTimezone',
+            'paymentHostedCheckout.customerUserAgent',
+            'paymentHostedCheckout.customerColorDepth',
+            'paymentHostedCheckout.customerJavaEnabled',
+            'paymentHostedCheckout.customerScreenHeight',
+            'paymentHostedCheckout.customerScreenWidth',
+            'paymentHostedCheckout.customerBrowserLocale',
+            'paymentHostedCheckout.customerTimezoneOffset',
+        ],
+        WorldlineConfig::PAYMENT_METHOD_CREDIT_CARD_AMERICAN_EXPRESS => [
+            'paymentHostedCheckout.returnUrl',
+            'paymentHostedCheckout.customerIpAddress',
+            'paymentHostedCheckout.customerSelectedLocale',
+            'paymentHostedCheckout.customerTimezone',
+            'paymentHostedCheckout.customerUserAgent',
+            'paymentHostedCheckout.customerColorDepth',
+            'paymentHostedCheckout.customerJavaEnabled',
+            'paymentHostedCheckout.customerScreenHeight',
+            'paymentHostedCheckout.customerScreenWidth',
+            'paymentHostedCheckout.customerBrowserLocale',
+            'paymentHostedCheckout.customerTimezoneOffset',
+        ],
+        WorldlineConfig::PAYMENT_METHOD_PAYPAL => [
+            'paymentHostedCheckout.returnUrl',
+            'paymentHostedCheckout.customerIpAddress',
+            'paymentHostedCheckout.customerSelectedLocale',
+            'paymentHostedCheckout.customerTimezone',
+            'paymentHostedCheckout.customerUserAgent',
+            'paymentHostedCheckout.customerColorDepth',
+            'paymentHostedCheckout.customerJavaEnabled',
+            'paymentHostedCheckout.customerScreenHeight',
+            'paymentHostedCheckout.customerScreenWidth',
+            'paymentHostedCheckout.customerBrowserLocale',
+            'paymentHostedCheckout.customerTimezoneOffset',
+        ],
+    ];
+
+
+In \Pyz\Glue\PaymentRestApi\PaymentRestApiConfig
+
+Set the priority order of payment methods (example)
+
+    /**
+     * @var array<string, int>
+     */
+    protected const PAYMENT_METHOD_PRIORITY = [
+        WorldlineConfig::PAYMENT_METHOD_CREDIT_CARD_VISA => 1,
+        WorldlineConfig::PAYMENT_METHOD_CREDIT_CARD_MASTER_CARD => 2,
+        WorldlineConfig::PAYMENT_METHOD_CREDIT_CARD_AMERICAN_EXPRESS => 3,
+        WorldlineConfig::PAYMENT_METHOD_PAYPAL => 4,
+        DummyPaymentConfig::PAYMENT_METHOD_INVOICE => 5,
+        DummyPaymentConfig::PAYMENT_METHOD_CREDIT_CARD => 6,
+    ];
+
+Add the required fields for Worldline payment methods, too
+
+    /**
+     * @var array<string, array>
+     */
+    protected const PAYMENT_METHOD_REQUIRED_FIELDS = [
+        .
+        .
+        WorldlineConfig::PROVIDER_NAME => [
+            WorldlineConfig::PAYMENT_METHOD_CREDIT_CARD_VISA => [
+                'paymentHostedCheckout.returnUrl',
+                'paymentHostedCheckout.customerIpAddress',
+                'paymentHostedCheckout.customerSelectedLocale',
+                'paymentHostedCheckout.customerTimezone',
+                'paymentHostedCheckout.customerUserAgent',
+                'paymentHostedCheckout.customerColorDepth',
+                'paymentHostedCheckout.customerJavaEnabled',
+                'paymentHostedCheckout.customerScreenHeight',
+                'paymentHostedCheckout.customerScreenWidth',
+                'paymentHostedCheckout.customerBrowserLocale',
+                'paymentHostedCheckout.customerTimezoneOffset',
+            ],
+            WorldlineConfig::PAYMENT_METHOD_NAME_CREDIT_CARD_VISA => [
+                'paymentHostedCheckout.returnUrl',
+                'paymentHostedCheckout.customerIpAddress',
+                'paymentHostedCheckout.customerSelectedLocale',
+                'paymentHostedCheckout.customerTimezone',
+                'paymentHostedCheckout.customerUserAgent',
+                'paymentHostedCheckout.customerColorDepth',
+                'paymentHostedCheckout.customerJavaEnabled',
+                'paymentHostedCheckout.customerScreenHeight',
+                'paymentHostedCheckout.customerScreenWidth',
+                'paymentHostedCheckout.customerBrowserLocale',
+                'paymentHostedCheckout.customerTimezoneOffset',
+            ],
+            WorldlineConfig::PAYMENT_METHOD_CREDIT_CARD_MASTER_CARD => [
+                'paymentHostedCheckout.returnUrl',
+                'paymentHostedCheckout.customerIpAddress',
+                'paymentHostedCheckout.customerSelectedLocale',
+                'paymentHostedCheckout.customerTimezone',
+                'paymentHostedCheckout.customerUserAgent',
+                'paymentHostedCheckout.customerColorDepth',
+                'paymentHostedCheckout.customerJavaEnabled',
+                'paymentHostedCheckout.customerScreenHeight',
+                'paymentHostedCheckout.customerScreenWidth',
+                'paymentHostedCheckout.customerBrowserLocale',
+                'paymentHostedCheckout.customerTimezoneOffset',
+            ],
+            WorldlineConfig::PAYMENT_METHOD_NAME_CREDIT_CARD_MASTER_CARD => [
+                'paymentHostedCheckout.returnUrl',
+                'paymentHostedCheckout.customerIpAddress',
+                'paymentHostedCheckout.customerSelectedLocale',
+                'paymentHostedCheckout.customerTimezone',
+                'paymentHostedCheckout.customerUserAgent',
+                'paymentHostedCheckout.customerColorDepth',
+                'paymentHostedCheckout.customerJavaEnabled',
+                'paymentHostedCheckout.customerScreenHeight',
+                'paymentHostedCheckout.customerScreenWidth',
+                'paymentHostedCheckout.customerBrowserLocale',
+                'paymentHostedCheckout.customerTimezoneOffset',
+            ],
+            WorldlineConfig::PAYMENT_METHOD_CREDIT_CARD_AMERICAN_EXPRESS => [
+                'paymentHostedCheckout.returnUrl',
+                'paymentHostedCheckout.customerIpAddress',
+                'paymentHostedCheckout.customerSelectedLocale',
+                'paymentHostedCheckout.customerTimezone',
+                'paymentHostedCheckout.customerUserAgent',
+                'paymentHostedCheckout.customerColorDepth',
+                'paymentHostedCheckout.customerJavaEnabled',
+                'paymentHostedCheckout.customerScreenHeight',
+                'paymentHostedCheckout.customerScreenWidth',
+                'paymentHostedCheckout.customerBrowserLocale',
+                'paymentHostedCheckout.customerTimezoneOffset',
+            ],
+            WorldlineConfig::PAYMENT_METHOD_NAME_CREDIT_CARD_AMERICAN_EXPRESS => [
+                'paymentHostedCheckout.returnUrl',
+                'paymentHostedCheckout.customerIpAddress',
+                'paymentHostedCheckout.customerSelectedLocale',
+                'paymentHostedCheckout.customerTimezone',
+                'paymentHostedCheckout.customerUserAgent',
+                'paymentHostedCheckout.customerColorDepth',
+                'paymentHostedCheckout.customerJavaEnabled',
+                'paymentHostedCheckout.customerScreenHeight',
+                'paymentHostedCheckout.customerScreenWidth',
+                'paymentHostedCheckout.customerBrowserLocale',
+                'paymentHostedCheckout.customerTimezoneOffset',
+            ],
+            WorldlineConfig::PAYMENT_METHOD_PAYPAL => [
+                'paymentHostedCheckout.returnUrl',
+                'paymentHostedCheckout.customerIpAddress',
+                'paymentHostedCheckout.customerSelectedLocale',
+                'paymentHostedCheckout.customerTimezone',
+                'paymentHostedCheckout.customerUserAgent',
+                'paymentHostedCheckout.customerColorDepth',
+                'paymentHostedCheckout.customerJavaEnabled',
+                'paymentHostedCheckout.customerScreenHeight',
+                'paymentHostedCheckout.customerScreenWidth',
+                'paymentHostedCheckout.customerBrowserLocale',
+                'paymentHostedCheckout.customerTimezoneOffset',
+            ],
+        ],
+    ];
+
+###### 10. Add house keeping job to jenkins cofiguration
+
+In jenkins.php add
+
+    // ----------------------------------------------------------------------------
+    // ---------------------- Worldline Housekeeping ------------------------------
+    // ----------------------------------------------------------------------------
+    
+    $jobs[] = [
+        'name' => 'delete-worldline-tokens-marked-for-deletion',
+        'command' => '$PHP_BIN vendor/bin/console worldline:token:remove-deleted',
+        'schedule' => '*/2 * 1-3 * *',
+        'enable' => true,
+        'stores' => ['DE'],
+    ];
+
+###### 11. integrate token table in customer view in backoffice
+
+Add WorldlineQueryContainer to CustomerDependencyProvider
+
+In CustomerDependencyProvider add constants and method addWorldlineQueryContainer
+
+    public const FACADE_PAYMENT = 'FACADE_PAYMENT';
+
+    public const QUERY_CONTAINER_WORLDLINE = 'QUERY_CONTAINER_WORLDLINE';
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    private function addWorldlineQueryContainer(Container $container): Container
+    {
+        $container->set(
+            static::QUERY_CONTAINER_WORLDLINE,
+            fn (Container $container): WorldlineQueryContainerInterface => $container->getLocator()->worldline()->queryContainer(),
+        );
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+     private function addPaymentFacade(Container $container): Container
+     {
+        $container->set(
+            static::FACADE_PAYMENT,
+            fn (Container $container): PaymentFacadeInterface => $container->getLocator()->payment()->facade(),
+        );
+
+          return $container;
+      }
+
+And extend provideCommunicationLayerDependencies
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    public function provideCommunicationLayerDependencies(Container $container): Container
+    {
+        $container = parent::provideCommunicationLayerDependencies($container);
+        .        
+        .
+        $container = $this->addPaymentFacade($container);
+        $container = $this->addWorldlineQueryContainer($container);
+
+        return $container;
+    }
+
+In CustomerCommunicationFactory add createTokenTable, getPaymentFacade and getWorldlineQueryContainer
+
+    /**
+     * @param int $idCustomer
+     *
+     * @return \Pyz\Zed\Customer\Communication\Table\TokenTable
+     */
+    public function createTokenTable(int $idCustomer): TokenTable
+    {
+        return new TokenTable($this->getPaymentFacade(), $idCustomer, $this->getWorldlineQueryContainer());
+    }
+
+    /**
+     * @return \Pyz\Zed\Worldline\Persistence\WorldlineQueryContainerInterface
+     */
+    private function getWorldlineQueryContainer(): WorldlineQueryContainerInterface
+    {
+        return $this->getProvidedDependency(CustomerDependencyProvider::QUERY_CONTAINER_WORLDLINE);
+    }
+
+    /**
+    * @return \Pyz\Zed\Payment\Business\PaymentFacadeInterface
+    */
+    private function getPaymentFacade(): PaymentFacadeInterface
+    {
+        return $this->getProvidedDependency(CustomerDependencyProvider::FACADE_PAYMENT);
+    }
+
+Add the creation of the token table to Customer/Communication/Controller/ViewController 
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array
+     */
+    public function indexAction(Request $request): RedirectResponse|array
+    {
+        $viewResponse = parent::indexAction($request);
+        if ($viewResponse instanceof RedirectResponse) {
+            return $viewResponse;
+        }
+
+        if (is_array($viewResponse)) {
+            $idCustomer = $this->castId($request->get(CustomerConstants::PARAM_ID_CUSTOMER));
+            $tokenTable = $this->getFactory()->createTokenTable($idCustomer);
+            $viewResponse['tokenTable'] = $tokenTable->render();
+        }
+
+        return $viewResponse;
+    }
+
+and Customer/Presentation/View/index.twig
+
+    .
+    .
+    {% embed '@Gui/Partials/widget.twig' with { widget_title: 'Payment Tokens' } %}
+        {% block widget_content %}
+            {{ tokenTable | raw }}
+        {% endblock %}
+    {% endembed %}
+
+###### 12. Register WorldlineTokenConsole in \Pyz\Zed\Console\ConsoleDependencyProvider
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return array<\Symfony\Component\Console\Command\Command>
+     */
+    protected function getConsoleCommands(Container $container): array
+    {
+        $commands = [
+            .
+            .
+            new WorldlineTokenConsole(),
+        ];
+
+###### 13. Add oms commands and conditions to \Pyz\Zed\Oms\OmsDependencyProvider
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function extendCommandPlugins(Container $container): Container
+    {
+        $container->extend(self::COMMAND_PLUGINS, function (CommandCollectionInterface $commandCollection) {
+            .
+            .
+
+            // ----- Worldline
+            $commandCollection->add(new CreateHostedCheckoutCommandPlugin(), 'Worldline/HostedCheckoutCreate');
+            $commandCollection->add(new GetHostedCheckoutStatusCommandPlugin(), 'Worldline/HostedCheckoutStatus');
+            $commandCollection->add(new GetPaymentStatusCommandPlugin(), 'Worldline/PaymentStatus');
+            $commandCollection->add(new PlaceholderCommandPlugin(), 'Worldline/Cancel');
+            $commandCollection->add(new ApprovePaymentCommandPlugin(), 'Worldline/Capture');
+            $commandCollection->add(new PlaceholderCommandPlugin(), 'Worldline/Refund');
+
+            .
+            .
+
+            return $commandCollection;
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function extendConditionPlugins(Container $container): Container
+    {
+        $container->extend(self::CONDITION_PLUGINS, function (ConditionCollectionInterface $conditionCollection) {
+            .
+            .
+
+            // ----- Worldline
+            $conditionCollection->add(new WorldlineIsHostedCheckoutCreatedConditionPlugin(), 'Worldline/IsHostedCheckoutCreated');
+            $conditionCollection->add(new WorldlineIsHostedCheckoutFailedConditionPlugin(), 'Worldline/IsHostedCheckoutFailed');
+            $conditionCollection->add(new WorldlineIsHostedCheckoutPaymentCreatedConditionPlugin(), 'Worldline/IsHostedCheckoutStatusReceived');
+            $conditionCollection->add(new WorldlineIsHostedCheckoutStatusCancelledConditionPlugin(), 'Worldline/IsHostedCheckoutStatusCancelled');
+            $conditionCollection->add(new WorldlineIsHostedCheckoutTimedOutConditionPlugin(), 'Worldline/IsHostedCheckoutTimedOut');
+            $conditionCollection->add(new WorldlineIsPaymentGuaranteedConditionPlugin(), 'Worldline/IsPaymentGuaranteed');
+            $conditionCollection->add(new WorldlineIsPaymentCancelledConditionPlugin(), 'Worldline/IsPaymentCancelled');
+            $conditionCollection->add(new WorldlineIsPaymentRejectedConditionPlugin(), 'Worldline/IsPaymentRejected');
+            $conditionCollection->add(new FalseConditionPlugin(), 'Worldline/IsCapturablePaymentCancelled');
+            $conditionCollection->add(new FalseConditionPlugin(), 'Worldline/IsCancellationReceived');
+            $conditionCollection->add(new WorldlineIsCaptureTimedOutConditionPlugin(), 'Worldline/IsCaptureTimedOut');
+            $conditionCollection->add(new WorldlineIsCapturedConditionPlugin(), 'Worldline/IsCaptured');
+            $conditionCollection->add(new WorldlineIsCaptureRejectedConditionPlugin(), 'Worldline/IsCaptureRejected');
+            $conditionCollection->add(new FalseConditionPlugin(), 'Worldline/IsRefunded');
+            $conditionCollection->add(new FalseConditionPlugin(), 'Worldline/IsRefundFailed');
+
+            .
+            .
+
+            return $conditionCollection;
+        });
+
+        return $container;
     }
 
 #### Payment Process

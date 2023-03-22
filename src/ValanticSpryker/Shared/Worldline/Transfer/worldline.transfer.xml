@@ -3,6 +3,19 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="spryker:transfer-01 http://static.spryker.com/transfer-01.xsd">
 
+    <transfer name="RestOrderDetailsAttributes">
+        <property name="hostedCheckoutId" type="string"/>
+        <property name="hostedCheckoutCompletionStatus" type="string"/>
+        <!--
+            PENDING when STATUS_HOSTED_CHECKOUT_STATUS_PENDING
+
+            UNSUCCSESSFUL  if vsy_payment_worldline.status is STATUS_HOSTED_CHECKOUT_STATUS_PAYMENT_CANCELLED_BY_CONSUMER or
+                        STATUS_HOSTED_CHECKOUT_STATUS_PAYMENT_CANCELLED_CLIENT_NOT_ELIGIBLE
+
+            SUCCESSFUL if STATUS_HOSTED_CHECKOUT_STATUS_PAYMENT_CREATED or later state
+        -->
+    </transfer>
+
     <transfer name="Order">
         <property name="hostedCheckoutId" type="string"/>
         <property name="hostedCheckoutCompletionStatus" type="string"/>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<statemachine
+    xmlns="http://static.spryker.com"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://static.spryker.com http://static.spryker.com/oms-01.xsd">
+
+    <process name="Shipment">
+        <states>
+            <state name="waiting for shipment"/>
+            <state name="order picked"/>
+            <state name="invoice generated"/>
+            <state name="shipped"/>
+        </states>
+
+        <transitions>
+            <transition happy="true" condition="Oms/IsOrderPicked">
+                <source>waiting for shipment</source>
+                <target>order picked</target>
+            </transition>
+
+            <transition happy="true" condition="Oms/InvoiceIsGenerated">
+                <source>order picked</source>
+                <target>invoice generated</target>
+            </transition>
+
+            <transition happy="true" condition="Oms/IsOrderShipped">
+                <source>invoice generated</source>
+                <target>shipped</target>
+            </transition>
+
+            <transition condition="Oms/IsReturnCreated">
+                <source>shipped</source>
+                <target>waiting for return</target>
+            </transition>
+
+            <transition condition="Oms/IsOrderItemReturned">
+                <source>shipped</source>
+                <target>returned</target>
+            </transition>
+
+            <transition condition="Oms/IsOrderItemReturnRejected">
+                <source>shipped</source>
+                <target>return rejected</target>
+            </transition>
+
+            <transition happy="true">
+                <source>shipped</source>
+                <target>closed</target>
+                <event>close</event>
+            </transition>
+
+            <transition>
+                <source>closed</source>
+                <target>shipped</target>
+                <event>allow return</event>
+            </transition>
+        </transitions>
+
+        <events>
+            <event name="update stock" onEnter="true"/>
+        </events>
+    </process>
+</statemachine>
