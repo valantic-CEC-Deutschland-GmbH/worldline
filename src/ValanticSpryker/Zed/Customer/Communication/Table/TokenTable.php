@@ -9,9 +9,9 @@ use Generated\Shared\Transfer\PaymentMethodCriteriaTransfer;
 use Orm\Zed\Worldline\Persistence\Map\VsyWorldlineTokenTableMap;
 use Spryker\Service\UtilText\Model\Url\Url;
 use Spryker\Shared\Customer\CustomerConstants;
-use Spryker\Zed\Payment\Business\PaymentFacadeInterface;
 use Spryker\Zed\Gui\Communication\Table\AbstractTable;
 use Spryker\Zed\Gui\Communication\Table\TableConfiguration;
+use Spryker\Zed\Payment\Business\PaymentFacadeInterface;
 use Spryker\Zed\PropelOrm\Business\Runtime\ActiveQuery\Criteria;
 use ValanticSpryker\Zed\Worldline\Persistence\WorldlineQueryContainerInterface;
 

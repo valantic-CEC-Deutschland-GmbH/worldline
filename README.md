@@ -105,6 +105,35 @@ in Pyz/Zed/Queue/QueueConfig.php
         ];
     }
 
+in Pyz/Client/RabbitMq/RabbitMqConfig.php
+
+    /**
+     *  QueueNameFoo, // Queue => QueueNameFoo, (Queue and error queue will be created: QueueNameFoo and QueueNameFoo.error)
+     *  QueueNameBar => [
+     *       RoutingKeyFoo => QueueNameBaz, // (Additional queues can be defined by several routing keys)
+     *   ],
+     *
+     * @see https://www.rabbitmq.com/tutorials/amqp-concepts.html
+     *
+     * @return array
+     */
+    protected function getQueueConfiguration(): array
+    {
+        return array_merge(
+            [
+                .
+                .
+                WorldlineWebhookConstants::WORLDLINE_WEBHOOK_EVENT_QUEUE_NAME => [
+                    WorldlineWebhookConfig::EVENT_ROUTING_KEY_ERROR => WorldlineWebhookConstants::WORLDLINE_WEBHOOK_EVENT_QUEUE_ERROR,
+                ],
+                .
+                .
+            ],
+            .
+            .
+        );
+    }
+
 ###### 2. Add OMS Mappings (Example)
     
 in config/shared/config_default.php      
@@ -269,7 +298,27 @@ In \Pyz\Zed\Payment\PaymentDependencyProvider
         ];
     }
 
-###### 7. Register WorldlineWebhooks Plugins
+###### 7. Register PaymentTokens Plugins
+
+in Pyz/Glue/GlueApplication/GlueApplicationDependencyProvider
+
+     /**
+     * {@inheritDoc}
+     *
+     * @return array<\Spryker\Glue\GlueApplicationExtension\Dependency\Plugin\ResourceRoutePluginInterface>
+     */
+    protected function getResourceRoutePlugins(): array
+    {
+        return [
+            .
+            .
+            new PaymentTokensRestApiGlueResourceRoutePlugin(),
+            .
+            .
+        ];
+    }
+
+###### 8. Register WorldlineWebhooks Plugins
 
 In \Pyz\Zed\EventDispatcher\EventDispatcherDependencyProvider
 
@@ -287,6 +336,27 @@ In \Pyz\Zed\EventDispatcher\EventDispatcherDependencyProvider
         ];
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param \Spryker\Glue\GlueApplicationExtension\Dependency\Plugin\ResourceRelationshipCollectionInterface $resourceRelationshipCollection
+     *
+     * @return \Spryker\Glue\GlueApplicationExtension\Dependency\Plugin\ResourceRelationshipCollectionInterface
+     */
+    protected function getResourceRelationshipPlugins(
+        ResourceRelationshipCollectionInterface $resourceRelationshipCollection
+    ): ResourceRelationshipCollectionInterface {
+        .
+        .
+        $resourceRelationshipCollection->addRelationship(
+            CustomersRestApiConfig::RESOURCE_CUSTOMERS,
+            new PaymentTokensResourceRelationshipPlugin(),
+        );
+        .
+        .
+        return $resourceRelationshipCollection;
+    }
+
 And in \Pyz\Zed\Router\RouterDependencyProvider
 
     /**
@@ -301,7 +371,7 @@ And in \Pyz\Zed\Router\RouterDependencyProvider
         ];
     }
 
-###### 8. Register Queue Processor Plugin
+###### 9. Register Queue Processor Plugin
 
 In \Pyz\Zed\Queue\QueueDependencyProvider
 
@@ -321,7 +391,7 @@ In \Pyz\Zed\Queue\QueueDependencyProvider
         ];
     }
 
-###### 9. Add Worldline payment methods
+###### 10. Add Worldline payment methods
 
 In \Pyz\Glue\CheckoutRestApi\CheckoutRestApiConfig
 
@@ -591,7 +661,7 @@ Add the required fields for Worldline payment methods, too
         ],
     ];
 
-###### 10. Add house keeping job to jenkins cofiguration
+###### 11. Add house keeping job to jenkins cofiguration
 
 In jenkins.php add
 
@@ -607,7 +677,7 @@ In jenkins.php add
         'stores' => ['DE'],
     ];
 
-###### 11. integrate token table in customer view in backoffice
+###### 12. integrate token table in customer view in backoffice
 
 Add WorldlineQueryContainer to CustomerDependencyProvider
 
@@ -726,7 +796,7 @@ and Customer/Presentation/View/index.twig
         {% endblock %}
     {% endembed %}
 
-###### 12. Register WorldlineTokenConsole in \Pyz\Zed\Console\ConsoleDependencyProvider
+###### 13. Register WorldlineTokenConsole in \Pyz\Zed\Console\ConsoleDependencyProvider
 
     /**
      * @param \Spryker\Zed\Kernel\Container $container
@@ -741,7 +811,7 @@ and Customer/Presentation/View/index.twig
             new WorldlineTokenConsole(),
         ];
 
-###### 13. Add oms commands and conditions to \Pyz\Zed\Oms\OmsDependencyProvider
+###### 14. Add oms commands and conditions to \Pyz\Zed\Oms\OmsDependencyProvider
 
     /**
      * @param \Spryker\Zed\Kernel\Container $container
@@ -807,6 +877,47 @@ and Customer/Presentation/View/index.twig
 
         return $container;
     }
+
+###### 15. Add RedirectUrl, ReturnMac and MerchantReference to RestCheckoutResponseTransfer
+
+In Pyz/Zed/CheckoutRestApi/Business/Checkout/PlaceOrderProcessor.php
+(override the respective Spryker Class)
+
+    /**
+     * @param \Generated\Shared\Transfer\CheckoutResponseTransfer $checkoutResponseTransfer
+     *
+     * @return \Generated\Shared\Transfer\RestCheckoutResponseTransfer
+     */
+    protected function createRestCheckoutResponseTransfer(CheckoutResponseTransfer $checkoutResponseTransfer): RestCheckoutResponseTransfer
+    {
+        $restCheckoutResponseTransfer = parent::createRestCheckoutResponseTransfer($checkoutResponseTransfer);
+
+        $restCheckoutResponseTransfer->setCustomerReference($checkoutResponseTransfer->getSaveOrder()->getCustomerReference())
+            ->setRedirectUrl(self::URL_SCHEME_AND_PAYMENT_PREFIX . $checkoutResponseTransfer->getPartialRedirectUrl())
+            ->setReturnmac($checkoutResponseTransfer->getReturnmac())
+            ->setMerchantReference($checkoutResponseTransfer->getMerchantReference());
+
+        return $restCheckoutResponseTransfer;
+    }
+
+Extend CheckoutRestApiBusinessFactory to ensure the new derived class is used
+
+    /**
+     * @return \Spryker\Zed\CheckoutRestApi\Business\Checkout\PlaceOrderProcessorInterface
+     */
+    public function createPlaceOrderProcessor(): PlaceOrderProcessorInterface
+    {
+        return new PlaceOrderProcessor(
+            $this->getCheckoutFacade(),
+            $this->getQuoteFacade(),
+            $this->getCalculationFacade(),
+            $this->createCheckoutValidator(),
+            $this->getQuoteMapperPlugins(),
+            $this->getConfig(),
+        );
+    }
+    
+    
 
 #### Payment Process
 
