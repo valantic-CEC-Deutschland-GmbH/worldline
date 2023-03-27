@@ -57,6 +57,7 @@ use Orm\Zed\Worldline\Persistence\VsyWorldlineRestReceiveLogQuery;
 use Orm\Zed\Worldline\Persistence\VsyWorldlineThreeDSecureResultQuery;
 use Orm\Zed\Worldline\Persistence\VsyWorldlineToken;
 use Orm\Zed\Worldline\Persistence\VsyWorldlineTokenQuery;
+use Spryker\Shared\Kernel\Store;
 use ValanticSpryker\Glue\CheckoutRestApi\CheckoutRestApiConfig;
 use ValanticSpryker\Shared\Worldline\WorldlineConstants;
 use ValanticSpryker\Shared\WorldlineWebhook\WorldlineWebhookConstants;
@@ -267,7 +268,7 @@ class WorldlineFacadeTest extends AbstractTest
 
         $this->tester->setConfig(WorldlineConstants::WORLDLINE_API_ENDPOINT, 'http://api.endpoint');
         $this->tester->setConfig(WorldlineConstants::WORLDLINE_API_KEY_ID, 'API_KEY_ID_010');
-        $this->tester->setConfig(WorldlineConstants::WORLDLINE_API_LR_MERCHANT_ID, 'MERCHANT_ID_010');
+        $this->tester->setConfig(WorldlineConstants::WORLDLINE_API_MERCHANT_ID, 'MERCHANT_ID_010');
 
         $apiLogger = new WorldlineApiCallLogger(new WorldlineEntityManager());
 
@@ -686,11 +687,13 @@ class WorldlineFacadeTest extends AbstractTest
     {
         $paymentMethodsTransfer = $this->getPaymentMethodsTransfer();
 
+        Store::getInstance()->setCurrentLocale('en_US');
+
         $quoteTransfer = new QuoteTransfer();
         $quoteTransfer
             ->setTotals((new TotalsTransfer())->setGrandTotal(4200))
             ->setCurrency((new CurrencyTransfer())->setCode('EUR'))
-            ->setCustomer((new CustomerTransfer())->setLocaleName('en_US'));
+            ->setCustomer((new CustomerTransfer()));
 
         $pathToResponses = __DIR__ . '/../_data/get_payment_products_response_filter_payment_methods.json';
         $body = file_get_contents($pathToResponses);

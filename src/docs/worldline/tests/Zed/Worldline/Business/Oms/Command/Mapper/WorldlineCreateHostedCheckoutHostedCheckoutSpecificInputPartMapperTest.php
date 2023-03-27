@@ -11,6 +11,7 @@ use Generated\Shared\Transfer\PaymentTransfer;
 use Generated\Shared\Transfer\PaymentWorldlineTransfer;
 use Generated\Shared\Transfer\WorldlineCreateHostedCheckoutTransfer;
 use Generated\Shared\Transfer\WorldlinePaymentHostedCheckoutTransfer;
+use Spryker\Shared\Kernel\Store;
 use ValanticSpryker\Zed\Worldline\Business\Oms\Command\Mapper\WorldlineCreateHostedCheckoutHostedCheckoutSpecificInputPartMapper;
 use ValanticSpryker\Zed\Worldline\Persistence\WorldlineQueryContainerInterface;
 use ValanticSpryker\Zed\Worldline\WorldlineConfig;
@@ -42,9 +43,11 @@ class WorldlineCreateHostedCheckoutHostedCheckoutSpecificInputPartMapperTest ext
         $paymentWorldlineTransfer = new PaymentWorldlineTransfer();
         $paymentWorldlineTransfer->setPaymentHostedCheckout((new WorldlinePaymentHostedCheckoutTransfer())->setReturnUrl('http://some.url'));
 
+        Store::getInstance()->setCurrentLocale('de_DE');
+
         $orderTransfer = (new OrderTransfer())
             ->setCustomer(
-                (new CustomerTransfer())->setIdCustomer(666)->setLocaleName('de_DE'),
+                (new CustomerTransfer())->setIdCustomer(666),
             )
             ->setPayments(new ArrayObject([
                 (new PaymentTransfer())
@@ -71,9 +74,11 @@ class WorldlineCreateHostedCheckoutHostedCheckoutSpecificInputPartMapperTest ext
         $paymentWorldlineTransfer = new PaymentWorldlineTransfer();
         $paymentWorldlineTransfer->setPaymentHostedCheckout((new WorldlinePaymentHostedCheckoutTransfer())->setReturnUrl('http://some.url'));
 
+        Store::getInstance()->setCurrentLocale('de_DE');
+
         $orderTransfer = (new OrderTransfer())
             ->setCustomer(
-                (new CustomerTransfer())->setIdCustomer(666)->setLocaleName('de_DE'),
+                (new CustomerTransfer())->setIdCustomer(666),
             )
             ->setPayments(new ArrayObject([
                 (new PaymentTransfer())
