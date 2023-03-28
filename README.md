@@ -883,6 +883,8 @@ and Customer/Presentation/View/index.twig
 In Pyz/Zed/CheckoutRestApi/Business/Checkout/PlaceOrderProcessor.php
 (override the respective Spryker Class)
 
+    private const URL_SCHEME_AND_PAYMENT_PREFIX = 'https://payment.';
+
     /**
      * @param \Generated\Shared\Transfer\CheckoutResponseTransfer $checkoutResponseTransfer
      *
