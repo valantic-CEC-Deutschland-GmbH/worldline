@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<statemachine
+    xmlns="spryker:oms-01"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="spryker:oms-01 http://static.spryker.com/oms-01.xsd">
+
+    <process name="OrderExport">
+        <states>
+            <state name="ready for order export" reserved="true"/>
+            <state name="order export failed" reserved="true"/>
+            <state name="waiting for export status" reserved="true"/>
+            <state name="order exported" reserved="true"/>
+<!--            <state name="clearing" reserved="true"/>-->
+        </states>
+
+        <transitions>
+            <transition condition="Oms/IsOrderExportedCondition" happy="true">
+                <source>ready for order export</source>
+                <target>waiting for export status</target>
+                <event>export order</event>
+            </transition>
+
+            <transition>
+                <source>ready for order export</source>
+                <target>order export failed</target>
+                <event>export order</event>
+            </transition>
+
+            <transition>
+                <source>order export failed</source>
+                <target>ready for order export</target>
+            </transition>
+
+<!--            <transition condition="Oms/OrderExportRejectedCondition">-->
+<!--                <source>waiting for export status</source>-->
+<!--                <target>clearing</target>-->
+<!--            </transition>-->
+
+            <transition happy="true" condition="Oms/OrderExportSuccessCondition">
+                <source>waiting for export status</source>
+                <target>order exported</target>
+            </transition>
+
+            <transition happy="true">
+                <source>order exported</source>
+                <target>waiting for shipment</target>
+                <event>update stock</event>
+            </transition>
+
+<!--            <transition>-->
+<!--                <source>clearing</source>-->
+<!--                <target>ready for order export</target>-->
+<!--                <event>approve clearing</event>-->
+<!--            </transition>-->
+        </transitions>
+
+        <events>
+<!--            <event name="approve clearing" manual="true"/>-->
+            <event name="export order" onEnter="true" command="OmsMiddlewareConnector/OrderExport"/>
+        </events>
+    </process>
+</statemachine>

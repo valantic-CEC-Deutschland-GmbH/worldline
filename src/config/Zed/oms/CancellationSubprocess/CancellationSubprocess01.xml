@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<statemachine
+    xmlns="http://static.spryker.com"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://static.spryker.com http://static.spryker.com/oms-01.xsd">
+
+    <process name="Cancellation">
+        <states>
+            <state name="shipment cancelled"/>
+            <state name="cancelled order payment cancelled"/>
+            <state name="shipment partially cancelled"/>
+            <state name="partially cancelled order exported"/>
+        </states>
+
+        <transitions>
+            <transition condition="Oms/IsOrderCancelled">
+                <source>waiting for shipment</source>
+                <target>shipment cancelled</target>
+            </transition>
+
+            <transition condition="Worldline/IsCancellationReceived">
+                <source>shipment cancelled</source>
+                <target>cancelled order payment cancelled</target>
+                <event>cancel payment</event>
+            </transition>
+
+            <transition condition="Oms/IsOrderPartiallyCancelled">
+                <source>waiting for shipment</source>
+                <target>shipment partially cancelled</target>
+            </transition>
+
+            <transition>
+                <source>shipment partially cancelled</source>
+                <target>partially cancelled order exported</target>
+                <event>export partially cancelled order</event>
+            </transition>
+        </transitions>
+
+        <events>
+            <event name="cancel payment" onEnter="true" command="Worldline/Cancel"/>
+            <event name="export partially cancelled order" onEnter="true" command="Oms/PartiallyCancelledOrderExport"/>
+        </events>
+    </process>
+</statemachine>

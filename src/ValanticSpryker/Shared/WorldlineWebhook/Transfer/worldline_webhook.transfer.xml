@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<transfers xmlns="spryker:transfer-01"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="spryker:transfer-01 http://static.spryker.com/transfer-01.xsd">
+
+    <transfer name="WorldlineWebhookRequest">
+        <property name="requestUri" type="string"/>
+        <property name="requestType" type="string"/>
+        <property name="formatType" type="string"/>
+        <property name="queryData" type="array" singular="queryData"/>
+        <property name="serverData" type="array" singular="serverData"/>
+        <property name="headerData" type="array" singular="headerData"/>
+        <property name="requestData" type="array" singular="requestData"/>
+        <property name="path" type="string"/>
+        <property name="resource" type="string"/>
+        <property name="resourceAction" type="string"/>
+        <property name="resourceId" type="int"/>
+        <property name="resourceParameters" type="array" singular="resourceParameters"/>
+        <property name="filter" type="WorldlineWebhookFilter"/>
+        <property name="worldlineWebhookData" type="WorldlineWebhookData"/>
+        <property name="queryType" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineWebhookResponse">
+        <property name="type" type="string"/>
+        <property name="code" type="int"/>
+        <property name="headers" type="array" singular="headers"/>
+        <property name="meta" type="WorldlineWebhookMeta"/>
+        <property name="data" type="array" singular="data"/>
+        <property name="isPlainText" type="bool"/>
+    </transfer>
+
+    <transfer name="WorldlineWebhookFilter">
+        <property name="fields" type="array" singular="fields"/>
+        <property name="criteriaJson" type="string"/>
+        <property name="offset" type="int"/>
+        <property name="limit" type="int"/>
+        <property name="sort" type="array" singular="sort"/>
+    </transfer>
+
+    <transfer name="WorldlineWebhookData">
+        <property name="fields" type="array" singular="fields"/>
+        <property name="data" type="array" singular="data"/>
+        <property name="queryData" type="array" singular="queryData"/>
+    </transfer>
+
+    <transfer name="WorldlineWebhookCollection">
+        <property name="WorldlineWebhookTestCollection" type="WorldlineWebhook[]" singular="worldlineWebhook"/>
+    </transfer>
+
+    <transfer name="WorldlineWebhookCriteria">
+        <property name="idWorldlineWebhook" type="int"/>
+        <property name="WorldlineWebhookTestString" type="string"/>
+        <property name="WorldlineWebhookTestInt" type="int"/>
+        <property name="withTest" type="bool"/>
+    </transfer>
+</transfers>

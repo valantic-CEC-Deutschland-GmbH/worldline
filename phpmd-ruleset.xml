@@ -16,6 +16,12 @@
     <exclude-pattern>*/Orm/Propel/*</exclude-pattern>
     <exclude-pattern>*/Generated/*</exclude-pattern>
     <exclude-pattern>*Zed/DataImport/*</exclude-pattern>
+    <exclude-pattern>*/docs/worldline/tests/*</exclude-pattern>
+    <exclude-pattern>*/docs/worldline/tests/_support/_generated/*</exclude-pattern>
+    <exclude-pattern>*/docs/worldline/tests/*/_support/_generated/*</exclude-pattern>
+    <exclude-pattern>*/docs/worldline/tests/*/_support/*Tester.php</exclude-pattern>
+    <exclude-pattern>*/docs/worldline/tests/_helpers/*</exclude-pattern>
+    <exclude-pattern>*/docs/worldline/tests/_output/*</exclude-pattern>
 
     <rule ref="./vendor/spryker/development/resources/phpmd/ruleset.xml">
         <exclude name="LongClassName"/>

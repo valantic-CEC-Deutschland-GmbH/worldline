@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<transfers
+    xmlns="spryker:databuilder-01"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="spryker:databuilder-01 http://static.spryker.com/databuilder-01.xsd"
+>
+    <transfer name="PaymentWorldline">
+        <property name="fkSalesOrder" dataBuilderRule="numberBetween(1, 9999)"/>
+        <property name="paymentId" dataBuilderRule="uuid"/>
+        <property name="merchantReference" dataBuilderRule="bothify('DE--####')"/>
+        <property name="paymentMethod" dataBuilderRule="randomElement(['worldlineCreditCardVisa','worldlineCreditCardMasterCard','worldlineCreditCardAmericanExpress','worldlinePaypal'])"/>
+        <property name="paymentHostedCheckout" dataBuilderRule="WorldlinePaymentHostedCheckout"/>
+    </transfer>
+
+    <transfer name="WorldlinePaymentHostedCheckout">
+        <property name="hostedCheckoutId" dataBuilderRule="uuid"/>
+        <property name="returnmac" dataBuilderRule="uuid"/>
+        <property name="partialRedirectUrl" dataBuilderRule="url"/>
+        <property name="returnUrl" dataBuilderRule="url"/>
+        <property name="customerIpAddress" dataBuilderRule="ipv4"/>
+        <property name="customerSelectedLocale" dataBuilderRule="locale"/>
+        <property name="customerTimezone" dataBuilderRule="timezone"/>
+        <property name="customerUserAgent" dataBuilderRule="userAgent"/>
+        <property name="customerColorDepth" dataBuilderRule="numberBetween(8, 64)"/> <!-- Integer(2) -->
+        <property name="customerJavaEnabled" dataBuilderRule="=1"/>
+        <property name="customerScreenHeight" dataBuilderRule="numberBetween(420, 10000)"/>
+        <property name="customerScreenWidth" dataBuilderRule="numberBetween(280, 10000)"/>
+        <property name="customerBrowserLocale" dataBuilderRule="locale"/>
+        <property name="customerTimezoneOffset" dataBuilderRule="numberBetween(-720, 720)"/>
+    </transfer>
+
+    <transfer name="PaymentWorldlineTransactionStatus">
+        <property name="fkPaymentWorldline" dataBuilderRule="numberBetween(1000,100000)" />
+        <property name="fkWorldlineApiLog" dataBuilderRule="numberBetween(1000,100000)" />
+        <property name="fkWorldlineRestLog" dataBuilderRule="numberBetween(1000,100000)" />
+        <property name="transactionType" dataBuilderRule="randomElement(['payment', 'refund', 'token'])"/>
+        <property name="status" dataBuilderRule="randomElement(['HOSTED_CHECKOUT_CREATED','HOSTED_CHECKOUT_FAILED','IN_PROGRESS','PAYMENT_CREATED', 'CREATED', 'CANCELLED'])"/>
+        <property name="statusCategory" dataBuilderRule="randomElement(['CREATED','PENDING_PAYMENT','ACCOUNT_VERIFIED','PENDING_MERCHANT', 'PENDING_CONNECT_OR_3RD_PARTY', 'COMPLETED', 'REVERSED', 'REFUNDED', 'UNSUCCESSFUL'])"/>
+        <!--
+        CREATED - The transaction has been created. This is the initial state once a new payment, payout or refund is created. This category groups the following statuses:
+CREATED
+PENDING_PAYMENT: The payment is waiting on customer action. This category groups the following statuses:
+PENDING_PAYMENT
+REDIRECTED
+ACCOUNT_VERIFIED: The account has been verified. This category groups the following statuses:
+ACCOUNT_VERIFIED
+PENDING_MERCHANT: The transaction is awaiting approval to proceed with the payment, payout or refund. This category groups the following statuses:
+PENDING_APPROVAL
+PENDING_COMPLETION
+PENDING_CAPTURE
+PENDING_FRAUD_APPROVAL
+PENDING_CONNECT_OR_3RD_PARTY: The transaction is in the queue to be processed. This category groups the following statuses:
+AUTHORIZATION_REQUESTED
+CAPTURE_REQUESTED
+PAYOUT_REQUESTED
+REFUND_REQUESTED
+COMPLETED: The transaction has completed. This category groups the following statuses:
+CAPTURED
+PAID
+ACCOUNT_CREDITED
+CHARGEBACK_NOTIFICATION
+REVERSED: The transaction has been reversed. This category groups the following statuses:
+CHARGEBACKED
+REVERSED
+REFUNDED: The transaction has been refunded. This category groups the following statuses:
+REFUNDED
+UNSUCCESSFUL: The transaction has been rejected or is in such a state that it will never become successful. This category groups the following statuses:
+CANCELLED
+REJECTED
+REJECTED_CAPTURE
+REJECTED_CREDIT
+-->
+        <property name="statusCode" dataBuilderRule="randomElement([0,150])"/>
+        <property name="authorized" dataBuilderRule="=true"/>
+        <property name="cancellable" dataBuilderRule="=true"/>
+        <property name="refundable" dataBuilderRule="=true"/>
+        <property name="amount" dataBuilderRule="numberBetween(100,100000)"/>
+        <property name="createdAt" dataBuilderRule="date('Y-m-d')"/>
+        <property name="updatedAt" dataBuilderRule="date('Y-m-d')"/>
+    </transfer>
+
+    <transfer name="WorldlineCreditCardToken">
+        <property name="token" dataBuilderRule="uuid"/>
+        <!--<property name="fkCustomer" dataBuilderRule="numberBetween(1000,100000)"/>
+        <property name="fkInitialThreeDSecureResult" dataBuilderRule="numberBetween(1000,100000)"/>-->
+        <property name="expiryMonth" dataBuilderRule="date('my')"/>
+        <property name="obfuscatedCardNumber" dataBuilderRule="bothify('************####')"/>
+        <property name="holderName" dataBuilderRule="name"/>
+        <property name="paymentMethodKey" dataBuilderRule="randomElement(['worldlineCreditCardVisa','worldlineCreditCardMasterCard','worldlineCreditCardAmericanExpress'])"/>
+        <property name="initialSchemeTransactionId" dataBuilderRule="uuid"/>
+    </transfer>
+
+    <transfer name="WorldlineThreeDSecureData">
+        <property name="acsTransactionId" dataBuilderRule="uuid"/>
+        <property name="method" dataBuilderRule="randomElement(['frictionless','challenged', 'avs-verified', 'other'])"/>
+        <property name="utcTimestamp" dataBuilderRule="date('YmdHis')"/>
+    </transfer>
+</transfers>

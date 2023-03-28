@@ -1,0 +1,41 @@
+{
+    "payment" : {
+        "id" : "000000891500000237080000200001",
+        "paymentOutput" : {
+            "amountOfMoney" : {
+                "amount" : 2890,
+                "currencyCode" : "EUR"
+            },
+            "references" : {
+                "paymentReference" : "0"
+            },
+            "paymentMethod" : "card",
+            "cardPaymentMethodSpecificOutput" : {
+                "paymentProductId" : 1,
+                "authorisationCode" : "123456",
+                "card" : {
+                    "cardNumber" : "************7977",
+                    "expiryDate" : "1299"
+                },
+                "fraudResults" : {
+                    "avsResult" : "0",
+                    "cvvResult" : "M",
+                    "fraudServiceResult" : "no-advice"
+                },
+                "threeDSecureResults" : {
+                    "authenticationAmount" : {
+                        "currencyCode" : "EUR",
+                        "amount" : 2890
+                    }
+                }
+            }
+        },
+        "status" : "CAPTURE_REQUESTED",
+        "statusOutput" : {
+            "isCancellable" : true,
+            "statusCode" : 800,
+            "statusCodeChangeDateTime" : "20140627140735",
+            "isAuthorized" : true
+        }
+    }
+}

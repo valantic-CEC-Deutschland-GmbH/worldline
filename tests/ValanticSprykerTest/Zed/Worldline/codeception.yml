@@ -1,0 +1,12 @@
+namespace: ValanticSprykerTest\Zed\Worldline
+
+suites:
+  Business:
+    path: Business
+    actor: WorldlineBusinessTester
+    modules:
+      enabled:
+        - Asserts
+        - \SprykerTest\Shared\Testify\Helper\LocatorHelper:
+            projectNamespaces: ['ValanticSpryker']
+        - \SprykerTest\Shared\Testify\Helper\DataCleanupHelper

@@ -1,0 +1,80 @@
+namespace: ValanticSprykerTest\Zed\Worldline
+extends: '../../codeception.base.yml'
+
+suites:
+    Business:
+        path: Business
+        actor: WorldlineBusinessTester
+        modules:
+            enabled:
+                - Asserts
+                - \ValanticSprykerTest\Shared\Testify\Helper\Environment
+                - \SprykerTest\Shared\Testify\Helper\LocatorHelper:
+                      projectNamespaces: ['ValanticSpryker', 'ValanticSpryker']
+                - \SprykerTest\Shared\Testify\Helper\DataCleanupHelper
+                - \SprykerTest\Shared\Sales\Helper\SalesDataHelper
+                - \SprykerTest\Shared\Sales\Helper\SalesHelper
+                - \SprykerTest\Shared\Testify\Helper\ConfigHelper
+                - \SprykerTest\Shared\Propel\Helper\TransactionHelper
+                - \SprykerTest\Zed\Oms\Helper\OmsHelper
+                - \SprykerTest\Client\Testify\Helper\ClientHelper
+                - \SprykerTest\Client\Queue\Helper\QueueHelper
+                - \SprykerTest\Shared\Customer\Helper\CustomerDataHelper
+                - \SprykerTest\Shared\Testify\Helper\DependencyHelper
+                - \SprykerTest\Shared\Quote\Helper\PersistentQuoteHelper
+                - \SprykerTest\Shared\Product\Helper\ProductDataHelper
+                - \SprykerTest\Zed\Sales\Helper\BusinessHelper
+                - \ValanticSprykerTest\Shared\Worldline\Helper\HostedCheckoutHelper
+                - \ValanticSprykerTest\Shared\Worldline\Helper\PaymentTokenHelper
+                - \ValanticSprykerTest\Shared\Customer\Helper\CustomerAddressDataHelper
+                - \SprykerTest\Shared\Shipment\Helper\ShipmentCarrierDataHelper
+                - \SprykerTest\Shared\Shipment\Helper\ShipmentDataHelper
+                - \SprykerTest\Shared\Shipment\Helper\ShipmentMethodDataHelper
+    Communication:
+        path: Communication
+        actor: WorldlineCommunicationTester
+        modules:
+            enabled:
+                - Asserts
+                - \ValanticSprykerTest\Shared\Testify\Helper\Environment
+                -   \SprykerTest\Shared\Testify\Helper\LocatorHelper:
+                        projectNamespaces: ['ValanticSpryker', 'ValanticSpryker']
+                - \SprykerTest\Shared\Testify\Helper\DataCleanupHelper
+                - \SprykerTest\Shared\Sales\Helper\SalesDataHelper
+                - \SprykerTest\Shared\Sales\Helper\SalesHelper
+                - \SprykerTest\Shared\Testify\Helper\ConfigHelper
+                - \SprykerTest\Shared\Propel\Helper\TransactionHelper
+                - \SprykerTest\Zed\Oms\Helper\OmsHelper
+                - \SprykerTest\Shared\Customer\Helper\CustomerDataHelper
+                - \SprykerTest\Shared\Testify\Helper\DependencyHelper
+                - \SprykerTest\Shared\Quote\Helper\PersistentQuoteHelper
+                - \SprykerTest\Shared\Product\Helper\ProductDataHelper
+                - \SprykerTest\Zed\Sales\Helper\BusinessHelper
+    Persistence:
+        path: Persistence
+        actor: WorldlinePersistenceTester
+        modules:
+            enabled:
+                - Asserts
+                - \ValanticSprykerTest\Shared\Testify\Helper\Environment
+                -   \SprykerTest\Shared\Testify\Helper\LocatorHelper:
+                        projectNamespaces: [ 'ValanticSpryker', 'ValanticSpryker' ]
+                - \SprykerTest\Shared\Testify\Helper\DataCleanupHelper
+                - \SprykerTest\Shared\Sales\Helper\SalesDataHelper
+                - \SprykerTest\Shared\Sales\Helper\SalesHelper
+                - \SprykerTest\Shared\Testify\Helper\ConfigHelper
+                - \SprykerTest\Shared\Propel\Helper\TransactionHelper
+                - \SprykerTest\Zed\Oms\Helper\OmsHelper
+                - \SprykerTest\Client\Testify\Helper\ClientHelper
+                - \SprykerTest\Client\Queue\Helper\QueueHelper
+                - \SprykerTest\Shared\Customer\Helper\CustomerDataHelper
+                - \SprykerTest\Shared\Testify\Helper\DependencyHelper
+                - \SprykerTest\Shared\Quote\Helper\PersistentQuoteHelper
+                - \SprykerTest\Shared\Product\Helper\ProductDataHelper
+                - \SprykerTest\Zed\Sales\Helper\BusinessHelper
+                - \ValanticSprykerTest\Shared\Worldline\Helper\HostedCheckoutHelper
+                - \ValanticSprykerTest\Shared\Worldline\Helper\PaymentTokenHelper
+                - \ValanticSprykerTest\Shared\Customer\Helper\CustomerAddressDataHelper
+                - \SprykerTest\Shared\Shipment\Helper\ShipmentCarrierDataHelper
+                - \SprykerTest\Shared\Shipment\Helper\ShipmentDataHelper
+                - \SprykerTest\Shared\Shipment\Helper\ShipmentMethodDataHelper

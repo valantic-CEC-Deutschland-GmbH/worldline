@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<statemachine
+    xmlns="http://static.spryker.com"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://static.spryker.com http://static.spryker.com/oms-01.xsd">
+
+    <process name="RefundNoPayment">
+        <states>
+            <state name="refund exported"/>
+        </states>
+
+        <transitions>
+            <transition condition="Oms/IsRefundExported">
+                <source>returned</source>
+                <target>refund exported</target>
+                <event>export refund</event>
+            </transition>
+        </transitions>
+
+        <events>
+            <event name="export refund" command="Oms/ExportRefund"/>
+        </events>
+    </process>
+</statemachine>

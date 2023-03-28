@@ -1,0 +1,1464 @@
+<?xml version="1.0"?>
+<transfers xmlns="spryker:transfer-01"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="spryker:transfer-01 http://static.spryker.com/transfer-01.xsd">
+
+    <transfer name="RestOrderDetailsAttributes">
+        <property name="hostedCheckoutId" type="string"/>
+        <property name="hostedCheckoutCompletionStatus" type="string"/>
+        <!--
+            PENDING when STATUS_HOSTED_CHECKOUT_STATUS_PENDING
+
+            UNSUCCSESSFUL  if vsy_payment_worldline.status is STATUS_HOSTED_CHECKOUT_STATUS_PAYMENT_CANCELLED_BY_CONSUMER or
+                        STATUS_HOSTED_CHECKOUT_STATUS_PAYMENT_CANCELLED_CLIENT_NOT_ELIGIBLE
+
+            SUCCESSFUL if STATUS_HOSTED_CHECKOUT_STATUS_PAYMENT_CREATED or later state
+        -->
+    </transfer>
+
+    <transfer name="Order">
+        <property name="hostedCheckoutId" type="string"/>
+        <property name="hostedCheckoutCompletionStatus" type="string"/>
+    </transfer>
+
+    <transfer name="RestPayment">
+        <property name="dummyPayment" type="DummyPayment"/>
+        <property name="dummyPaymentInvoice" type="DummyPayment"/>
+        <property name="dummyPaymentCreditCard" type="DummyPayment"/>
+        <property name="worldlineCreditCard" type="WorldlineCustomerClientInformation"/>
+        <property name="worldlinePaypal" type="WorldlineCustomerClientInformation"/>
+    </transfer>
+
+    <transfer name="WorldlineCustomerClientInformation">
+        <property name="customerIpAddress" type="string"/>
+        <property name="customerSelectedLocale" type="string"/>
+        <property name="customerTimezone" type="string"/>
+        <property name="customerUserAgent" type="string"/>
+        <property name="customerColorDepth" type="int"/>
+        <property name="customerJavaEnabled" type="bool"/>
+        <property name="customerScreenHeight" type="int"/>
+        <property name="customerScreenWidth" type="int"/>
+        <property name="customerBrowserLocale" type="string"/>
+        <property name="customerTimezoneOffset" type="int"/>
+    </transfer>
+
+    <transfer name="WorldlineDeleteTokenRequest">
+        <property name="customerReference" type="string"/>
+        <property name="idCustomer" type="int"/>
+        <property name="token" type="string"/>
+        <property name="idToken" type="int"/>
+    </transfer>
+
+    <transfer name="WorldlineDeleteTokenResponse">
+        <property name="isSuccess" type="bool"/>
+        <property name="errorId" type="string"/>
+        <property name="errors" type="WorldlineErrorItem[]" singular="error"/>
+        <property name="httpStatusCode" type="int"/>
+    </transfer>
+
+    <transfer name="WorldlinePaymentTokenRequest">
+        <property name="customerReference" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlinePaymentTokensResponse">
+        <property name="isSuccessful" type="bool" />
+        <property name="errors" type="WorldlinePaymentTokenErrorItem[]" singular="error"/>
+        <property name="customerReference" type="string"/>
+        <property name="tokens" type="WorldlineCreditCardToken[]" singular="token"/>
+    </transfer>
+
+    <transfer name="WorldlinePaymentTokenErrorItem">
+        <property name="message" type="string"/> <!-- Default error message in english -->
+        <property name="messagePropertyKey" type="string"/> <!-- the property key of this error message -->
+    </transfer>
+
+    <transfer name="WorldlineCreditCardToken">
+        <property name="idToken" type="int"/>
+        <property name="token" type="string"/>
+        <property name="fkCustomer" type="int"/>
+        <property name="fkInitialThreeDSecureResult" type="int"/>
+        <property name="expiryMonth" type="string"/>
+        <property name="obfuscatedCardNumber" type="string"/>
+        <property name="holderName" type="string"/>
+        <property name="paymentMethodKey" type="string"/> <!-- not the fk, but a combined, humanreadable string; can be used to look up the db-entry and to check the config -->
+        <property name="paymentMethodName" type="string"/> <!-- name of the payment method like "Paypal" -->
+        <property name="initialSchemeTransactionId" type="string"/>
+        <property name="expiredAt" type="string"/>
+        <property name="deletedAt" type="string"/>
+    </transfer>
+
+    <transfer name="RestCheckoutResponse">
+        <property name="redirectUrl" type="string"/>
+        <property name="returnmac" type="string"/>
+        <property name="merchantReference" type="string"/>
+    </transfer>
+
+    <transfer name="RestCheckoutResponseAttributes">
+        <property name="redirectUrl" type="string"/>
+        <property name="returnmac" type="string"/>
+        <property name="merchantReference" type="string"/>
+    </transfer>
+
+    <transfer name="CheckoutResponse">
+        <property name="hostedCheckoutId" type="string"/>
+        <property name="redirectUrl" type="string"/>
+        <property name="partialRedirectUrl" type="string"/>
+        <property name="returnmac" type="string"/>
+        <property name="merchantReference" type="string"/>
+    </transfer>
+
+    <transfer name="PaymentWorldlineTransactionStatus">
+        <property name="fkPaymentWorldline" type="int"/>
+        <property name="fkWorldlineApiLog" type="int"/>
+        <property name="fkWorldlineRestLog" type="int"/>
+        <property name="transactionType" type="string"/>
+        <property name="status" type="string"/>
+        <property name="statusCategory" type="string"/>
+        <property name="statusCode" type="int"/>
+        <property name="statusCodeChangeDateTime" type="string"/>
+        <property name="authorized" type="bool"/>
+        <property name="cancellable" type="bool"/>
+        <property name="refundable" type="bool"/>
+        <property name="amount" type="int"/>
+        <property name="createdAt" type="string"/>
+        <property name="updatedAt" type="string"/>
+    </transfer>
+
+    <transfer name="WebhookEvent">
+        <property name="apiVersion" type="string"/>
+        <property name="id" type="string"/>
+        <property name="created" type="string"/>
+        <property name="merchantId" type="string"/>
+        <property name="type" type="string"/>
+        <property name="payment" type="PaymentEventData"/>
+        <property name="refund" type="RefundEventData"/>
+        <property name="token" type="WorldlineTokenEventData"/>
+    </transfer>
+
+    <transfer name="RefundEventData">
+        <property name="id" type="string"/>
+        <property name="refundOutput" type="WorldlineRefundOutput"/>
+        <property name="status" type="string"/>
+        <!--
+        Current high-level status of the refund in a human-readable form. Possible values are:
+CREATED - The transaction has been created. This is the initial state once a new refund is created.
+PENDING_APPROVAL - The transaction is awaiting approval from you to proceed with the processing of the refund
+REJECTED - The refund has been rejected
+REFUND_REQUESTED - The transaction is in the queue to be refunded
+CAPTURED - We have successfully refunded the customer and has received an online confirmation from the third party
+REFUNDED - We have successfully refunded the customer
+CANCELLED - You have cancelled the transaction
+        -->
+        <property name="statusOutput" type="WorldlineRefundStatusOutput"/>
+    </transfer>
+
+    <transfer name="WorldlineTokenEventData">
+        <property name="card" type="WorldlineTokenCard"/>
+        <!--<property name="eWallet" type="WorldlineTokenEWallet"/>-->
+        <property name="id" type="string"/>
+        <property name="originalPaymentId" type="string"/>
+        <property name="paymentProductId" type="int"/>
+        <!--<property name="sepaDirectDebit" type="WorldlineTokenSepaDirectDebit"/>-->
+    </transfer>
+
+    <transfer name="WorldlineTokenCard">
+        <property name="customer" type="WorldlineCustomer"/>
+        <property name="data" type="WorldlineTokenCardData"/>
+    </transfer>
+
+    <transfer name="WorldlineTokenCardData">
+        <property name="cardWithoutCvv" type="WorldlineCardWithoutCvv"/>
+        <property name="firstTransactionDate" type="string"/>
+        <property name="providerReference" type="strin"/>
+    </transfer>
+
+    <transfer name="WorldlineCardWithoutCvv">
+        <property name="issueNumber" type="string"/>
+        <property name="cardNumber" type="string"/>
+        <property name="cardholderName" type="string"/>
+        <property name="expiryDate" type="string"/>
+    </transfer>
+
+    <transfer name="PaymentEventData">
+        <property name="id" type="string"/>
+        <property name="paymentOutput" type="WorldlinePaymentOutput"/>
+        <property name="status" type="string"/>
+        <!--
+        Current high-level status of the payment in a human-readable form. Possible values are :
+ACCOUNT_VERIFIED - The account has been verified using a validation services like 0$ auth
+CREATED - The transaction has been created. This is the initial state once a new payment is created.
+REDIRECTED - The customer has been redirected to a 3rd party to complete the authentication/payment
+PENDING_PAYMENT - Instructions have been provided and we are now waiting for the money to come in
+PENDING_FRAUD_APPROVAL - The transaction has been marked for manual review after an automatic fraud screening
+PENDING_APPROVAL - The transaction is waiting for you to request one capture of the funds.
+PENDING_COMPLETION - The transaction needs to be completed.
+PENDING_CAPTURE - The transaction is waiting for you to request one or more captures of the funds.
+REJECTED - The transaction has been rejected
+AUTHORIZATION_REQUESTED - We have requested an authorization against an asynchronous system and are awaiting its response
+CAPTURE_REQUESTED - The transaction is in the queue to be captured
+CAPTURED - The transaction has been captured and we have received online confirmation
+PAID - We have matched the incoming funds to the transaction
+CANCELLED - You have cancelled the transaction
+REJECTED_CAPTURE - We or one of our downstream acquirers/providers have rejected the capture request
+REVERSED - The transaction has been reversed
+CHARGEBACK_NOTIFICATION - We have received a notification of chargeback and this status informs you that your account will be debited for a particular transaction
+CHARGEBACKED - The transaction has been chargebacked
+REFUNDED - The transaction has been refunded
+         -->
+        <property name="statusOutput" type="WorldlinePaymentStatusOutput"/>
+    </transfer>
+
+    <transfer name="Payment">
+        <property name="paymentWorldline" type="PaymentWorldline"/>
+    </transfer>
+
+    <transfer name="PaymentWorldline">
+        <property name="idPaymentWorldline" type="int"/>
+        <property name="fkSalesOrder" type="int"/>
+        <property name="paymentId" type="string"/>
+        <property name="merchantReference" type="string"/>
+        <property name="paymentMethod" type="string"/>
+        <property name="paymentHostedCheckout" type="WorldlinePaymentHostedCheckout"/>
+        <property name="type" type="string"/> <!-- type of payment at the beginning this will always be HOSTED_CHECKOUT-->
+    </transfer>
+
+    <transfer name="RestPayment">
+        <property name="paymentHostedCheckout" type="WorldlinePaymentHostedCheckout"/>
+    </transfer>
+
+    <transfer name="WorldlinePaymentHostedCheckout">
+        <property name="fkPaymentWorldline" type="int"/>
+        <property name="hostedCheckoutId" type="string"/>
+        <property name="returnmac" type="string"/>
+        <property name="partialRedirectUrl" type="string"/>
+        <property name="returnUrl" type="string"/>
+        <property name="customerIpAddress" type="string"/>
+        <property name="customerSelectedLocale" type="string"/>
+        <property name="customerTimezone" type="string"/>
+        <property name="customerUserAgent" type="string"/>
+        <property name="customerColorDepth" type="int"/> <!-- Integer(2) -->
+        <property name="customerJavaEnabled" type="bool"/>
+        <property name="customerScreenHeight" type="string"/>
+        <property name="customerScreenWidth" type="string"/>
+        <property name="customerBrowserLocale" type="string"/>
+        <property name="customerTimezoneOffset" type="int"/>
+        <property name="createdAt" type="string"/>
+        <property name="updatedAt" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineCreateHostedCheckout">
+        <property name="fkPaymentWorldline" type="int"/>
+        <property name="cardPaymentMethodSpecificInput" type="WorldlineCardPaymentMethodSpecificInput"/>
+        <property name="fraudFields" type="WorldlineFraudFields"/>
+        <property name="hostedCheckoutSpecificInput" type="HostedCheckoutSpecificInput"/>
+        <property name="merchant" type="WorldlineMerchant"/>
+        <property name="order" type="WorldlineOrder"/>
+        <property name="redirectPaymentMethodSpecificInput" type="WorldlineRedirectPaymentMethodSpecificInput"/>
+        <property name="sepaDirectDebitPaymentMethodsSpecificInput"
+        type="WorldlineSepaDirectDebitPaymentMethodsSpecificInput"/>
+    </transfer>
+
+    <transfer name="WorldlineCreateHostedCheckoutResponse">
+        <property name="isSuccess" type="bool"/>
+        <property name="errorId" type="string"/>
+        <property name="errors" type="WorldlineErrorItem[]" singular="error"/>
+        <property name="hostedCheckoutId" type="string"/>
+        <property name="RETURNMAC" type="string"/>
+        <property name="partialRedirectUrl" type="string"/>
+        <property name="invalidTokens" type="string[]"/>
+        <property name="merchantReference" type="string"/>
+        <property name="httpStatusCode" type="int"/>
+    </transfer>
+
+    <transfer name="WorldlineGetHostedCheckoutStatus">
+        <property name="fkPaymentWorldline" type="int"/>
+        <property name="hostedCheckoutId" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineGetHostedCheckoutStatusResponse">
+        <property name="isSuccess" type="bool"/>
+        <property name="errorId" type="string"/>
+        <property name="errors" type="WorldlineErrorItem[]" singular="error"/>
+        <property name="createdPaymentOutput" type="WorldlineCreatedPaymentOutput"/>
+        <property name="status" type="string"/>
+        <!--
+        This is the status of the hosted checkout. Possible values are:
+IN_PROGRESS - The checkout is still in progress and has not finished yet
+PAYMENT_CREATED - A payment has been created
+CANCELLED_BY_CONSUMER - If a customer cancels the payment on the payment product detail page of the MyCheckout hosted payment pages, the status will change to IN_PROGRESS. Since we understand you want to be aware of a customer cancelling the payment on the page we host for you, you can choose to receive the status CANCELLED_BY_CONSUMER instead of the status IN_PROGRESS. In order to receive the status CANCELLED_BY_CONSUMER, you need to have the returnCancelState flag enabled in the Create hosted checkout call.
+CLIENT_NOT_ELIGIBLE_FOR_SELECTED_PAYMENT_PRODUCT - With some payment products it might occur that the device of the user is not capable to complete the payment. If the Hosted Checkout Session was restricted to a single project that is not compatible to the user's device you will receive this Hosted Checkout status. This scenario applies to: Google Pay (Payment Product ID: 320).
+        -->
+        <property name="httpStatusCode" type="int"/>
+    </transfer>
+
+    <transfer name="WorldlineGetPaymentProductsRequest">
+        <property name="countryCode" type="string"/>
+        <property name="currencyCode" type="string"/>
+        <property name="locale" type="string"/>
+        <property name="amount" type="int"/>
+        <property name="isRecurring" type="bool"/>
+        <property name="hide" type="string"/>
+        <!--
+        Allows you to hide elements from the response, reducing the amount of data that needs to be returned to your client. Possible options are:
+fields - Don't return any data on fields of the payment product
+accountsOnFile - Don't return any accounts on file data
+translations - Don't return any label texts associated with the payment products
+productsWithoutFields - Don't return products that require any additional data to be captured
+productsWithoutInstructions - Don't return products that show instructions
+productsWithRedirects - Don't return products that require a redirect to a 3rd party. Note that products that involve potential redirects related to 3D Secure authentication are not hidden
+        -->
+    </transfer>
+
+    <transfer name="WorldlineGetPaymentProductsResponse">
+        <property name="paymentProducts" type="WorldlinePaymentProduct[]"/>
+        <property name="isSuccess" type="bool"/>
+        <property name="errorId" type="string"/>
+        <property name="errors" type="WorldlineErrorItem[]" singular="error"/>
+        <property name="httpStatusCode" type="int"/>
+    </transfer>
+
+    <transfer name="WorldlineGetPaymentRequest">
+        <property name="fkPaymentWorldline" type="int"/>
+        <property name="paymentId" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineGetPaymentResponse">
+        <property name="isSuccess" type="bool"/>
+        <property name="errorId" type="string"/>
+        <property name="errors" type="WorldlineErrorItem[]" singular="error"/>
+        <property name="hostedCheckoutSpecificOutput" type="WorldlineHostedCheckoutSpecificOutput"/>
+        <property name="id" type="string"/>
+        <property name="paymentOutput" type="WorldlinePaymentOutput"/>
+        <property name="status" type="string"/>
+        <!--
+        Current high-level status of the payment in a human-readable form. Possible values are :
+ACCOUNT_VERIFIED - The account has been verified using a validation services like 0$ auth
+CREATED - The transaction has been created. This is the initial state once a new payment is created.
+REDIRECTED - The customer has been redirected to a 3rd party to complete the authentication/payment
+PENDING_PAYMENT - Instructions have been provided and we are now waiting for the money to come in
+PENDING_FRAUD_APPROVAL - The transaction has been marked for manual review after an automatic fraud screening
+PENDING_APPROVAL - The transaction is waiting for you to request one capture of the funds.
+PENDING_COMPLETION - The transaction needs to be completed.
+PENDING_CAPTURE - The transaction is waiting for you to request one or more captures of the funds.
+REJECTED - The transaction has been rejected
+AUTHORIZATION_REQUESTED - We have requested an authorization against an asynchronous system and are awaiting its response
+CAPTURE_REQUESTED - The transaction is in the queue to be captured
+CAPTURED - The transaction has been captured and we have received online confirmation
+PAID - We have matched the incoming funds to the transaction
+CANCELLED - You have cancelled the transaction
+REJECTED_CAPTURE - We or one of our downstream acquirers/providers have rejected the capture request
+REVERSED - The transaction has been reversed
+CHARGEBACK_NOTIFICATION - We have received a notification of chargeback and this status informs you that your account will be debited for a particular transaction
+CHARGEBACKED - The transaction has been chargebacked
+REFUNDED - The transaction has been refunded
+         -->
+        <property name="statusOutput" type="WorldlinePaymentStatusOutput"/>
+        <property name="httpStatusCode" type="int"/>
+    </transfer>
+
+    <transfer name="WorldlineCancelPayment">
+        <property name="fkPaymentWorldline" type="int"/>
+        <property name="paymentId" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineCancelPaymentResponse">
+        <property name="isSuccess" type="bool"/>
+        <property name="errorId" type="string"/>
+        <property name="errors" type="WorldlineErrorItem[]" singular="error"/>
+        <property name="payment" type="WorldlinePayment"/>
+        <property name="mobilePaymentMethodSpecificOutput"
+                  type="WorldlineCancelPaymentMobilePaymentMethodSpecificOutput"/>
+        <property name="cardPaymentMethodSpecificOutput" type="WorldlineCancelPaymentCardPaymentMethodSpecificOutput"/>
+        <property name="httpStatusCode" type="int"/>
+    </transfer>
+
+    <transfer name="WorldlineCapturePaymentRequest">
+        <property name="fkPaymentWorldline" type="int"/>
+        <property name="paymentId" type="string"/>
+        <property name="amount" type="int"/> <!-- Integer(12) -->
+        <property name="isFinal" type="bool"/>
+    </transfer>
+
+    <transfer name="WorldlineCaptureResponse">
+        <property name="isSuccess" type="bool"/>
+        <property name="errorId" type="string"/>
+        <property name="errors" type="WorldlineErrorItem[]" singular="error"/>
+        <property name="captureOutput" type="WorldlineCaptureOutput"/>
+        <property name="id" type="string"/>
+        <property name="status" type="string"/>
+        <!--
+        Current high-level status of the captures in a human-readable form. Possible values are :
+CAPTURE_REQUESTED - The transaction is in the queue to be captured
+CAPTURED - The transaction has been captured and we have received online confirmation
+CANCELLED - You have cancelled the capture
+REJECTED_CAPTURE - The capture has been rejected
+REVERSED - The capture has been reversed
+
+        -->
+        <property name="statusOutput" type="WorldlineCaptureResponseStatusOutput"/>
+        <property name="httpStatusCode" type="int"/>
+    </transfer>
+
+    <transfer name="WorldlineApprovePaymentRequest">
+        <property name="fkPaymentWorldline" type="int"/>
+        <property name="paymentId" type="string"/>
+        <property name="amount" type="int"/> <!-- used to allow to capture a lower amount than the authorized amount if required -->
+        <property name="order" type="WorldlineOrder"/> <!-- normally used to provide some updates, not used in the LR shop -->
+    </transfer>
+
+    <transfer name="WorldlineApprovePaymentResponse">
+        <property name="isSuccess" type="bool"/>
+        <property name="errorId" type="string"/>
+        <property name="errors" type="WorldlineErrorItem[]" singular="error"/>
+        <property name="cardPaymentMethodSpecificOutput" type="WorldlineApprovePaymentCardPaymentMethodSpecificOutput"/>
+        <property name="payment" type="WorldlinePayment"/>
+        <property name="httpStatusCode" type="int"/>
+    </transfer>
+
+    <transfer name="WorldlineRefundRequest">
+        <property name="fkPaymentWorldline" type="int"/>
+        <property name="paymentId" type="string"/>
+        <property name="amountOfMoney" type="AmountOfMoney"/>
+        <property name="bankRefundMethodSpecificInput" type="WorldlineRefundMethodSpecificInput"/>
+        <property name="customer" type="WorldlineRefundCustomer"/>
+        <property name="refundDate" type="string"/> <!-- String(8)-->
+        <property name="refundReferences" type="WorldlineRefundReferences"/>
+    </transfer>
+
+    <transfer name="WorldlineRefundResponse">
+        <property name="isSuccess" type="bool"/>
+        <property name="errorId" type="string"/>
+        <property name="errors" type="WorldlineErrorItem[]" singular="error"/>
+        <property name="id" type="string"/>
+        <property name="refundOutput" type="WorldlineRefundOutput"/>
+        <property name="status" type="string"/>
+        <!--
+        Current high-level status of the refund in a human-readable form. Possible values are:
+CREATED - The transaction has been created. This is the initial state once a new refund is created.
+PENDING_APPROVAL - The transaction is awaiting approval from you to proceed with the processing of the refund
+REJECTED - The refund has been rejected
+REFUND_REQUESTED - The transaction is in the queue to be refunded
+CAPTURED - We have successfully refunded the customer and has received an online confirmation from the third party
+REFUNDED - We have successfully refunded the customer
+CANCELLED - You have cancelled the transaction
+        -->
+        <property name="statusOutput" type="WorldlineRefundStatusOutput"/>
+        <property name="httpStatusCode" type="int"/>
+    </transfer>
+
+    <transfer name="WorldlineGetRefundRequest">
+        <property name="fkPaymentWorldline" type="int"/>
+        <property name="refundId" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineRefundOutput">
+        <property name="amountOfMoney" type="AmountOfMoney"/>
+        <property name="amountPaid" type="int"/>
+        <property name="cardRefundMethodSpecificOutput" type="WorldlineCardRefundMethodSpecificOutput"/>
+        <property name="paymentMethod" type="string"/>
+        <property name="references" type="WorldlineRefundReferences"/>
+    </transfer>
+
+    <transfer name="WorldlineCardRefundMethodSpecificOutput">
+        <property name="refundProductId" type="int"/>
+        <property name="totalAmountPaid" type="int"/>
+        <property name="totalAmountRefunded" type="int"/>
+    </transfer>
+
+    <transfer name="WorldlineRefundReferences">
+        <property name="merchantOrderId" type="int"/>
+        <property name="merchantReference" type="string"/>
+        <property name="paymentReference" type="string"/>
+        <property name="providerId" type="string"/>
+        <property name="providerReference" type="string"/>
+        <property name="referenceOrigPayment" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineRefundStatusOutput">
+        <property name="errors" type="WorldlineErrorItem[]" singular="error"/>
+        <property name="isCancellable" type="bool"/>
+        <property name="statusCategory" type="string"/>
+        <!--
+        Highlevel status of the payment, payout or refund with the following possible values:
+CREATED - The transaction has been created. This is the initial state once a new payment, payout or refund is created. This category groups the following statuses:
+CREATED
+PENDING_PAYMENT: The payment is waiting on customer action. This category groups the following statuses:
+PENDING_PAYMENT
+REDIRECTED
+ACCOUNT_VERIFIED: The account has been verified. This category groups the following statuses:
+ACCOUNT_VERIFIED
+PENDING_MERCHANT: The transaction is awaiting approval to proceed with the payment, payout or refund. This category groups the following statuses:
+PENDING_APPROVAL
+PENDING_COMPLETION
+PENDING_CAPTURE
+PENDING_FRAUD_APPROVAL
+PENDING_CONNECT_OR_3RD_PARTY: The transaction is in the queue to be processed. This category groups the following statuses:
+AUTHORIZATION_REQUESTED
+CAPTURE_REQUESTED
+PAYOUT_REQUESTED
+REFUND_REQUESTED
+COMPLETED: The transaction has completed. This category groups the following statuses:
+CAPTURED
+PAID
+ACCOUNT_CREDITED
+CHARGEBACK_NOTIFICATION
+REVERSED: The transaction has been reversed. This category groups the following statuses:
+CHARGEBACKED
+REVERSED
+REFUNDED: The transaction has been refunded. This category groups the following statuses:
+REFUNDED
+UNSUCCESSFUL: The transaction has been rejected or is in such a state that it will never become successful. This category groups the following statuses:
+CANCELLED
+REJECTED
+REJECTED_CAPTURE
+REJECTED_CREDIT
+        -->
+        <property name="statusCode" type="int"/>
+        <property name="statusCodeChangeDateTime" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineRefundMethodSpecificInput">
+        <property name="bankAccountBban" type="WorldlineBankAccountBban"/>
+        <property name="bankAccountIban" type="WorldlineBankAccountIban"/>
+        <property name="countryCode" type="string"/> <!-- String(2) -->
+    </transfer>
+
+    <transfer name="WorldlineRefundCustomer">
+        <property name="address" type="WorldlineAddressPersonal"/>
+        <property name="companyInformation" type="WorldlineCompanyInformation"/>
+        <property name="contactDetails" type="WorldlineContactDetails"/>
+        <property name="fiscalNumber" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineContactDetails">
+        <property name="emailAddress" type="string"/>
+        <property name="emailMessageType" type="string"/>
+        <property name="faxNumber" type="string"/> <!-- String(20) -->
+        <property name="mobilePhoneNumber" type="string"/> <!-- String(20) -->
+        <property name="phoneNumber" type="string"/> <!-- String(20) -->
+        <property name="workPhoneNumber" type="string"/> <!-- String(20) -->
+    </transfer>
+
+    <transfer name="WorldlineCompanyInformation">
+        <property name="name" type="string"/>
+        <property name="vatNumber" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineCaptureResponseStatusOutput">
+        <property name="statusCode" type="int"/>
+    </transfer>
+
+    <transfer name="WorldlineCaptureOutput">
+        <property name="amountOfMoney" type="AmountOfMoney"/>
+        <property name="amountPaid" type="int"/>
+        <property name="amountReversed" type="int"/>
+        <property name="mobilePaymentMethodSpecificOutput" type="WorldlineMobilePaymentMethodSpecificOutput"/>
+        <property name="cardPaymentMethodSpecificOutput" type="WorldlineCardPaymentMethodSpecificOutput"/>
+        <property name="redirectPaymentMethodSpecificOutput" type="WorldlineRedirectPaymentMethodSpecificOutput"/>
+        <property name="paymentMethod" type="string"/>
+        <property name="references" type="WorldlinePaymentOutputReferences"/>
+    </transfer>
+
+    <transfer name="WorldlineMobilePaymentMethodSpecificOutput">
+        <property name="autorisationCode" type="string"/>
+        <property name="fraudResults" type="WorldlineFraudResults"/>
+        <property name="network" type="string"/>
+        <property name="paymentData" type="WorldlineCaptureMobilePaymentMethodSpecificOutputPaymentData"/>
+        <property name="paymentProductId" type="int"/>
+        <property name="threeDSecureResults" type="WorldlineThreeDSecureResults"/>
+    </transfer>
+
+    <transfer name="WorldlineCaptureMobilePaymentMethodSpecificOutputPaymentData">
+        <property name="dpan" type="string"/> <!-- String(19) -->
+        <property name="expiryDate" type="string"/> <!-- String(4) -->
+    </transfer>
+
+    <transfer name="WorldlineCancelPaymentMobilePaymentMethodSpecificOutput">
+        <property name="voidResponseId" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineCancelPaymentCardPaymentMethodSpecificOutput">
+        <property name="voidResponseId" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineApprovePaymentCardPaymentMethodSpecificOutput">
+        <property name="voidResponseId" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlinePaymentProduct">
+        <property name="accountsOnFile" type="WorldlineAccountOnFile[]"/>
+        <property name="acquirerCountry" type="string"/>
+        <property name="allowsInstallments" type="bool"/>
+        <property name="allowsRecurring" type="bool"/>
+        <property name="allowsTokenization" type="bool"/>
+        <property name="authenticationIndicator" type="WorldlineAuthenticationIndicator"/>
+        <property name="autoTokenized" type="bool"/>
+        <property name="canBeIframed" type="bool"/>
+        <property name="deviceFingerPrintEnabled" type="bool"/>
+        <property name="displayHints" type="WorldlineDisplayHint"/>
+        <property name="fields" type="WorldlinePaymentProductField[]"/>
+        <property name="fieldsWarning" type="string"/>
+        <property name="id" type="int"/>
+        <property name="isJavaScriptRequired" type="bool"/>
+        <property name="maxAmount" type="int"/>
+        <property name="minAmount" type="int"/>
+        <property name="mobileIntegrationLevel" type="int"/>
+        <property name="paymentMethod" type="string"/>
+        <property name="paymentProductGroup" type="string"/>
+        <property name="useRedirectTo3rdParty" type="bool"/>
+    </transfer>
+
+
+    <transfer name="WorldlinePaymentProductField">
+        <property name="dataRestrictions" type="WorldlinePaymentProductFieldDataRestriction[]" singular="dataRestriction"/>
+        <property name="displayHints" type="WorldlinePaymentProductFieldDisplayHints"/>
+        <property name="id" type="int"/>
+        <property name="type" type="string"/>
+        <!--
+        The type of field, possible values are:
+string - Any UTF-8 chracters
+numericstring - A string that consisting only of numbers. Note that you should strip out anything that is not a digit, but leading zeros are allowed
+date - Date in the format DDMMYYYY
+expirydate - Expiration date in the format MMYY
+integer - An integer
+boolean - A boolean
+         -->
+        <property name="usedForLookup" type="bool"/>
+    </transfer>
+
+    <transfer name="WorldlinePaymentProductFieldDisplayHints">
+        <property name="alwaysShow" type="bool"/>
+        <property name="displayOrder" type="int"/>
+        <property name="formElement" type="WorldlinePaymentProductFieldDisplayHintsFormElement"/>
+        <property name="label" type="string"/>
+        <property name="link" type="string"/>
+        <property name="mask" type="string"/>
+        <property name="obfuscate" type="bool"/>
+        <property name="placeholderLabel" type="string"/>
+        <property name="prefferedInputType" type="string"/>
+        <property name="tooltip" type="WorldlinePaymentProductFieldDisplayHintsTooltip"/>
+    </transfer>
+
+    <transfer name="WorldlinePaymentProductFieldDisplayHintsTooltip">
+        <property name="image" type="string"/>
+        <property name="label" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlinePaymentProductFieldDisplayHintsFormElement">
+        <property name="type" type="string"/>
+        <property name="valueMapping" type="WorldlinePaymentProductFieldDisplayHintsFormElementValueMapping[]"/>
+    </transfer>
+
+    <transfer name="WorldlinePaymentProductFieldDisplayHintsFormElementValueMapping">
+        <property name="displayElements" type="WorldlinePaymentProductFieldDisplayHintsFormElementValueMappingDisplayElement[]" singular="displayElement"/>
+        <property name="value" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlinePaymentProductFieldDisplayHintsFormElementValueMappingDisplayElement">
+        <property name="id" type="string"/>
+        <property name="label" type="string"/>
+        <property name="type" type="string"/>
+        <!--
+         The type of the display element. Indicates how the value should be presented. Possible values are:
+STRING - as plain text
+CURRENCY - as an amount in cents displayed with a decimal separator and the currency of the payment
+PERCENTAGE - as a number with a percentage sign
+INTEGER - as an integer
+URI - as a link
+        -->
+        <property name="value" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlinePaymentProductFieldDataRestriction">
+        <property name="isRequired" type="bool"/>
+        <property name="validators" type="WorldlinePaymentProductFieldDataRestrictionValidators"/>
+    </transfer>
+
+    <transfer name="WorldlinePaymentProductFieldDataRestrictionValidators">
+        <property name="boletoBancarioRequiredness" type="WorldlineBoretoBancarioRequiredness"/>
+    </transfer>
+
+    <transfer name="WorldlineBoretoBancarioRequiredness">
+        <property name="fiscalNumberLength" type="int"/>
+        <property name="emailAddress" type="bool"/>
+        <!--
+            Indicates that the content should be validated against the rules for an email address
+            SDK Object type
+            EmptyValidator
+        -->
+        <property name="expirationDate" type="bool"/>
+        <!--
+        Indicates that the content should be validated against the rules for an expiration date (it should be in the future)
+SDK Object type
+EmptyValidator
+        -->
+        <property name="fixedList" type="WorldlinePaymentProductFieldDataRestrictionValidatorsFixedList"/>
+        <property name="iban" type="bool"/>
+        <!--
+        Indicates that the content of this (iban) field needs to validated against format checks and modulo check (as described in ISO 7064)
+SDK Object type
+EmptyValidator
+        -->
+        <property name="length" type="WorldlinePaymentProductFieldDataRestrictionValidatorsLength"/>
+        <property name="luhn" type="bool"/>
+        <!--
+        Indicates that the content needs to be validated using a LUHN check
+SDK Object type
+EmptyValidator
+         -->
+        <property name="range" type="WorldlinePaymentProductFieldDataRestrictionValidatorsRange"/>
+        <property name="regularExpression" type="WorldlinePaymentProductFieldDataRestrictionValidatorsRegularExpression"/>
+        <property name="residentIdNumber" type="bool"/>
+        <!--
+        Indicates that the content needs to be validated as per the Chinese resident identity number format
+        -->
+        <property name="termsAndConditions" type="bool"/>
+        <!--
+        Indicates that the content should be validated as such that the customer has accepted the field as if they were terms and conditions of a service
+SDK Object type
+EmptyValidator
+        -->
+    </transfer>
+
+    <transfer name="WorldlinePaymentProductFieldDataRestrictionValidatorsRegularExpression">
+        <property name="regularExpression" type="regularExpression"/>
+    </transfer>
+
+    <transfer name="WorldlinePaymentProductFieldDataRestrictionValidatorsRange">
+        <property name="maxValue" type="int"/>
+        <property name="minValue" type="int"/>
+    </transfer>
+
+    <transfer name="WorldlinePaymentProductFieldDataRestrictionValidatorsLength">
+        <property name="minLength" type="int"/>
+        <property name="maxLength" type="int"/>
+    </transfer>
+
+    <transfer name="WorldlinePaymentProductFieldDataRestrictionValidatorsFixedList">
+        <property name="allowedValues" type="string[]"/>
+    </transfer>
+
+    <transfer name="WorldlineDisplayHint">
+        <property name="displayOrder" type="int"/>
+        <property name="label" type="string"/>
+        <property name="logo" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineAuthenticationIndicator">
+        <property name="name" type="string"/>
+        <property name="value" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineAccountOnFile">
+        <property name="attributes" type="WorldlineAccountOnFileAttribute[]" singular="attribute"/>
+        <property name="displayHints" type="WorldlineAccountOnFileDisplayHints"/>
+        <property name="id" type="int"/>
+        <property name="paymentProductId" type="int"/>
+    </transfer>
+
+    <transfer name="WorldlineAccountOnFileDisplayHints">
+        <property name="labelTemplate" type="WorldlineAccountOnFileDisplayHintsAttribute[]"/>
+        <property name="logo" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineAccountOnFileDisplayHintsAttribute">
+        <property name="attributeKey" type="string"/>
+        <property name="mask" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineAccountOnFileAttribute">
+        <property name="key" type="string"/>
+        <property name="mustWriteReason" type="string"/>
+        <!--
+        The reason why the status is MUST_WRITE. Currently only "IN_THE_PAST" is possible as value (for expiry date), but this can be extended with new values in the future.
+        -->
+        <property name="status" type="string"/>
+        <!--
+        Possible values:
+READ_ONLY - attribute cannot be updated and should be presented in that way to the user
+CAN_WRITE - attribute can be updated and should be presented as an editable field, for example an expiration date that will expire very soon
+MUST_WRITE - attribute should be updated and must be presented as an editable field, for example an expiration date that has already expired
+Any updated values that are entered for CAN_WRITE or MUST_WRITE will be used to update the values stored in the token.
+        -->
+        <property name="value" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineErrorItem">
+        <property name="category" type="string"/>
+        <property name="code" type="string"/>
+        <property name="httpStatusCode" type="int"/>
+        <property name="id" type="string"/>
+        <property name="message" type="string"/>
+        <property name="propertyName" type="string"/>
+        <property name="requestId" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineRedirectPaymentMethodSpecificInput">
+        <property name="expirationPeriod" type="integer"/>
+        <property name="paymentProduct840SpecificInput" type="WorldlinePaymentProduct840SpecificInput"/>
+        <property name="paymentProductId" type="int"/> <!-- Integer(5) -->
+        <property name="recurringPaymentSequenceIndicator" type="string"/>
+        <property name="requiresApproval" type="bool"/>
+        <property name="token" type="string"/> <!-- String(40) -->
+        <property name="tokenize" type="bool"/>
+    </transfer>
+
+    <transfer name="WorldlinePaymentProduct840SpecificInput">
+        <!-- PayPal -->
+        <property name="addressSelectionAtPayPal" type="bool"/>
+    </transfer>
+
+    <transfer name="">
+
+    </transfer>
+
+    <transfer name="WorldlineMerchant">
+        <property name="contactWebsiteUrl" type="string"/> <!-- String(2048) -->
+        <property name="seller" type="WorldlineSeller"/>
+        <property name="websiteUrl" type="string"/> <!-- String(60) -->
+    </transfer>
+
+    <transfer name="WorldlineSeller">
+        <property name="address" type="WorldlineAddress"/>
+        <property name="channelCode" type="string"/> <!-- String(3) -->
+        <property name="description" type="string"/> <!-- String(32) -->
+        <property name="externalReferenceId" type="string"/> <!-- String(15) -->
+        <property name="geocode" type="string"/> <!-- String(5) -->
+        <property name="id" type="string"/> <!-- String(40) -->
+        <property name="invoiceNumber" type="string"/> <!-- String(12) -->
+        <property name="mcc" type="string"/> <!-- String(5) -->
+        <property name="name" type="string"/> <!-- String(128) -->
+        <property name="phoneNumber" type="string"/> <!-- String(32) -->
+        <property name="type" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineFraudFields">
+        <property name="blackListData" type="string"/> <!-- String(50) -->
+        <property name="customerIpAddress" type="string"/> <!-- String(45) -->
+        <property name="giftCardType" type="string"/>
+        <property name="giftMessage" type="string"/> <!-- String(160) -->
+        <property name="orderTimeZone" type="string"/> <!-- String(2) -->
+        <property name="userData" type="string[]"/>
+        <!--
+        Array of up to 16 userData properties, each with a max length of 256 characters, that can be used for fraudscreening
+        -->
+    </transfer>
+
+    <transfer name="WorldlineCardPaymentMethodSpecificInput">
+        <property name="authorizationMode" type="string"/>
+        <!--
+         Determines the type of the authorization that will be used. Allowed values:
+FINAL_AUTHORIZATION - The payment creation results in an authorization that is ready for capture. Final authorizations can't be reversed and need to be captured for the full amount within 7 days.
+PRE_AUTHORIZATION - The payment creation results in a pre-authorization that is ready for capture. Pre-authortizations can be reversed and can be captured within 30 days. The capture amount can be lower than the authorized amount.
+SALE - The payment creation results in an authorization that is already captured at the moment of approval.
+Only used with some acquirers, ingnored for acquirers that don't support this. In case the acquirer doesn't allow this to be specified the authorizationMode is 'unspecified', which behaves similar to a final authorization.
+        -->
+        <property name="customerReference" type="string"/> <!-- String(17) -->
+        <property name="initialSchemeTransactionId" type="string"/> <!-- String(100) -->
+        <property name="paymentProductId" type="int"/> <!-- Integer(5) -->
+        <property name="recurring" type="WorldlineRecurring"/>
+        <property name="requiresApproval" type="bool"/>
+        <property name="skipFraudService" type="bool"/>
+        <property name="threeDSecure" type="WorldlineThreeDSecure"/>
+        <property name="token" type="string"/> <!-- String(40) -->
+        <property name="tokenize" type="bool"/>
+        <property name="transactionChannel" type="string"/>
+        <!--
+        Indicates the channel via which the payment is created. Allowed values:
+ECOMMERCE - The transaction is a regular E-Commerce transaction.
+MAIL - The transaction is a Mail Order.
+MOTO - The transaction is a Mail Order/Telephone Order.
+TELEPHONE - The transaction is a Telephone Order.
+Defaults to ECOMMERCE.
+         -->
+        <property name="unscheduledCardOnFileRequestor" type="string"/>
+        <property name="unscheduledCardOnFileSequenceIndicator" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineRecurring">
+        <property name="endDate" type="string"/> <!-- String(8) -->
+        <property name="minFrequency" type="int"/> <!-- Integer(4) -->
+        <property name="recurringPaymentSequenceIndicator" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineCreatedPaymentOutput">
+        <property name="displayedData" type="WorldlinePaymentDisplayedData"/>
+        <property name="payment" type="WorldlinePayment"/>
+        <property name="paymentCreationReferences" type="WorldlinePaymentCreationReferences"/>
+        <property name="tokenizationSucceeded" type="bool"/>
+        <property name="tokens" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlinePaymentDisplayedData">
+        <property name="displayedDataType" type="string"/> <!-- is an enumeration possible values SHOW_INSTRUCTIONS, SHOW_TRANSACTION_RESULTS-->
+        <property name="renderingData" type="string"/>
+        <property name="showData" type="WorldlineShowDataItem[]"/>
+    </transfer>
+
+    <transfer name="WorldlineShowDataItem">
+        <property name="key" type="string"/>
+        <property name="value" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlinePaymentCreationReferences">
+        <property name="additionalReference" type="string"/>
+        <property name="externalReference" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlinePayment">
+        <property name="hostedCheckoutSpecificOutput" type="WorldlineHostedCheckoutSpecificOutput"/>
+        <property name="id" type="string"/>
+        <property name="paymentOutput" type="WorldlinePaymentOutput"/>
+        <property name="status" type="string"/>
+        <!-- enumeration possible values:
+        Description
+Current high-level status of the payment in a human-readable form. Possible values are :
+ACCOUNT_VERIFIED - The account has been verified using a validation services like 0$ auth
+CREATED - The transaction has been created. This is the initial state once a new payment is created.
+REDIRECTED - The customer has been redirected to a 3rd party to complete the authentication/payment
+PENDING_PAYMENT - Instructions have been provided and we are now waiting for the money to come in
+PENDING_FRAUD_APPROVAL - The transaction has been marked for manual review after an automatic fraud screening
+PENDING_APPROVAL - The transaction is awaiting approval from you to proceed with the capturing of the funds
+PENDING_COMPLETION - The transaction needs to be completed.
+PENDING_CAPTURE - The transaction is waiting for you to request one or more captures of the funds.
+REJECTED - The transaction has been rejected
+AUTHORIZATION_REQUESTED - we have requested an authorization against an asynchronous system and is awaiting its response
+CAPTURE_REQUESTED - The transaction is in the queue to be captured
+CAPTURED - The transaction has been captured and we have received online confirmation
+PAID - We have matched the incoming funds to the transaction
+CANCELLED - You have cancelled the transaction
+REJECTED_CAPTURE - We or one of our downstream acquirers/providers have rejected the capture request
+REVERSED - The transaction has been reversed
+CHARGEBACK_NOTIFICATION - We have received a notification of chargeback and this status informs you that your account will be debited for a particular transaction
+CHARGEBACKED - The transaction has been chargebacked
+REFUNDED - The transaction has been refunded
+-->
+        <property name="statusOutput" type="WorldlinePaymentStatusOutput"/>
+    </transfer>
+
+    <transfer name="WorldlineHostedCheckoutSpecificOutput">
+        <property name="hostedCheckoutId" type="string"/>
+        <property name="variant" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlinePaymentStatusOutput">
+        <property name="errors" type="WorldlineErrorItem[]" singular="error"/>
+        <property name="isAuthorized" type="bool"/>
+        <property name="isCancellable" type="bool"/>
+        <property name="isRefundable" type="bool"/>
+        <property name="statusCategory" type="string"/>
+        <!--
+        Highlevel status of the payment, payout or refund with the following possible values:
+CREATED - The transaction has been created. This is the initial state once a new payment, payout or refund is created. This category groups the following statuses:
+CREATED
+PENDING_PAYMENT: The payment is waiting on customer action. This category groups the following statuses:
+PENDING_PAYMENT
+REDIRECTED
+ACCOUNT_VERIFIED: The account has been verified. This category groups the following statuses:
+ACCOUNT_VERIFIED
+PENDING_MERCHANT: The transaction is awaiting approval to proceed with the payment, payout or refund. This category groups the following statuses:
+PENDING_APPROVAL
+PENDING_COMPLETION
+PENDING_CAPTURE
+PENDING_FRAUD_APPROVAL
+PENDING_CONNECT_OR_3RD_PARTY: The transaction is in the queue to be processed. This category groups the following statuses:
+AUTHORIZATION_REQUESTED
+CAPTURE_REQUESTED
+PAYOUT_REQUESTED
+REFUND_REQUESTED
+COMPLETED: The transaction has completed. This category groups the following statuses:
+CAPTURED
+PAID
+ACCOUNT_CREDITED
+CHARGEBACK_NOTIFICATION
+REVERSED: The transaction has been reversed. This category groups the following statuses:
+CHARGEBACKED
+REVERSED
+REFUNDED: The transaction has been refunded. This category groups the following statuses:
+REFUNDED
+UNSUCCESSFUL: The transaction has been rejected or is in such a state that it will never become successful. This category groups the following statuses:
+CANCELLED
+REJECTED
+REJECTED_CAPTURE
+REJECTED_CREDIT
+        -->
+        <property name="statusCode" type="int"/>
+        <property name="statusCodeChangeDateTime" type="string"/>
+        <property name="threeDSecureStatus" type="string"/>
+        <!--
+        The 3D Secure status, with the following possible values:
+ENROLLED: the card is enrolled for 3D Secure authentication. The customer can be redirected to a 3D Secure access control server (ACS)
+NOT_ENROLLED: the card is not enrolled for 3D Secure authentication
+INVALID_PARES_OR_NOT_COMPLETED: the PARes is invalid, or the customer did not complete the 3D Secure authentication
+AUTHENTICATED: the customer has passed the 3D Secure authentication
+NOT_AUTHENTICATED: the customer failed the 3D Secure authentication
+NOT_PARTICIPATING: the cardholder has not set up their card for 2-step 3D Secure.
+Note that this status will only be set for payments that make use of 2-step 3D Secure.
+        -->
+    </transfer>
+
+    <transfer name="WorldlinePaymentOutput">
+        <property name="amountOfMoney" type="AmountOfMoney"/>
+        <property name="amountPaid" type="int"/>
+        <property name="amountReversed" type="int"/>
+        <property name="cardPaymentMethodSpecificOutput" type="WorldlineCardPaymentMethodSpecificOutput"/>
+        <property name="redirectPaymentMethodSpecificOutput" type="WorldlineRedirectPaymentMethodSpecificOutput"/>
+        <property name="paymentMethod" type="string"/>
+        <property name="references" type="WorldlinePaymentOutputReferences"/>
+    </transfer>
+
+    <transfer name="WorldlinePaymentOutputReferences">
+        <property name="merchantReference" type="string"/>
+        <property name="referenceOrigPayment" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineRedirectPaymentMethodSpecificOutput">
+        <property name="bankAccountBban" type="WorldlineBankAccountBban"/>
+        <property name="bankAccountIban" type="WorldlineBankAccountIban"/>
+        <property name="bic" type="string"/>
+        <property name="paymentProduct836SpecificOutput" type="WorldlinePaymentProduct836SpecificOutput"/>
+        <property name="paymentProduct840SpecificOutput" type="WorldlinePaymentProduct840SpecificOutput"/> <!-- paypal -->
+        <property name="paymentProductId" type="int"/>
+        <property name="token" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlinePaymentProduct840SpecificOutput">
+        <property name="customerAccount" type="WorldlineProduct840CustomerAccount"/>
+        <property name="customerAddress" type="WorldlineProduct840CustomerAddress"/>
+        <property name="protectionEligibility" type="WorldlineProduct840ProtectionEligibility"/>
+    </transfer>
+
+    <transfer name="WorldlineProduct840ProtectionEligibility">
+        <property name="eligibility" type="string"/>
+        <property name="type" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineProduct840CustomerAddress">
+        <property name="additionalInfo" type="string"/>
+        <property name="city" type="string"/>
+        <property name="countryCode" type="string"/>
+        <property name="houseNumber" type="string"/>
+        <property name="state" type="string"/>
+        <property name="stateCode" type="string"/>
+        <property name="street" type="string"/>
+        <property name="zip" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineProduct840CustomerAccount">
+        <property name="accountId" type="string"/>
+        <property name="billingAgreementId" type="string"/>
+        <property name="companyName" type="string"/>
+        <property name="contactPhone" type="string"/>
+        <property name="countryCode" type="string"/>
+        <property name="customerAccountStatus" type="string"/>
+        <property name="customerAddressStatus" type="string"/>
+        <property name="firstName" type="string"/>
+        <property name="payerId" type="string"/>
+        <property name="surname" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineBankAccountIban">
+        <property name="accountHolderName" type="string"/>
+        <property name="iban" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineBankAccountBban">
+        <property name="accountHolderName" type="string"/>
+        <property name="accountNumber" type="string"/>
+        <property name="bankCity" type="string"/>
+        <property name="bankCode" type="string"/>
+        <property name="bankName" type="string"/>
+        <property name="branchCode" type="string"/>
+        <property name="checkDigit" type="string"/>
+        <property name="countryCode" type="string"/>
+        <property name="patronymicName" type="string"/> <!-- String(50) -->
+        <property name="swiftCode" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineCardPaymentMethodSpecificOutput">
+        <property name="paymentProductId" type="int"/>
+        <property name="authorisationCode" type="string"/>
+        <property name="card" type="WorldlineCard"/>
+        <property name="fraudResults" type="WorldlineFraudResults"/>
+        <property name="initialSchemeTransactionId" type="string"/>
+        <property name="schemeTransactionId" type="string"/>
+        <property name="threeDSecureResults" type="WorldlineThreeDSecureResults"/>
+        <property name="token" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineThreeDSecure">
+        <property name="authenticationAmount" type="WorldlineAuthenticationAmount"/>
+        <property name="authenticationFlow" type="string"/>
+        <property name="challengeCanvasSize" type="string"/>
+        <property name="challengeIndicator" type="string"/>
+        <property name="exemptionRequest" type="string"/>
+        <property name="priorThreeDSecureData" type="WorldlineThreeDSecureData"/>
+        <property name="sdkData" type="WorldlineSdkData"/>
+        <property name="skipAuthentication" type="bool"/>
+        <property name="transactionRiskLevel" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineThreeDSecureResults">
+        <property name="acsTransactionId" type="string"/>
+        <property name="appliedExemption" type="string"/>
+        <property name="authenticationAmount" type="WorldlineAuthenticationAmount"/>
+        <property name="cavv" type="string"/>
+        <property name="directoryServerTransactionId" type="string"/>
+        <property name="eci" type="string"/>
+        <property name="examptionOutput" type="WorldlineExemptionOutput"/>
+        <property name="schemeRiskScore" type="int"/>
+        <property name="sdkData" type="WorldlineSdkData"/>
+        <property name="threeDSecureData" type="WorldlineThreeDSecureData"/>
+        <property name="threeDSecureVersion" type="string"/>
+        <property name="threeDServerTransactionId" type="string"/>
+        <property name="xid" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineThreeDSecureData">
+        <property name="idThreeDSecureResult" type="int"/>
+        <property name="acsTransactionId" type="string"/>
+        <property name="method" type="string"/>
+        <property name="utcTimestamp" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineSdkData">
+        <property name="deviceRenderOptions" type="WorldlineDeviceRenderOptions"/>
+        <property name="sdkAppId" type="string"/> <!-- String(36) -->
+        <property name="sdkEncryptedData" type="string"/> <!-- String(64000) -->
+        <property name="sdkEphemeralPublicKey" type="string"/> <!-- String(256) -->
+        <property name="sdkMayTimeout" type="string"/> <!-- String(2) -->
+        <property name="sdkReferenceNumber" type="string"/> <!-- String(32) -->
+        <property name="sdkTransactionId" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineDeviceRenderOptions">
+        <property name="sdkInterface" type="string"/>
+        <property name="sdkUiTypes" type="string[]"/>
+        <!-- Lists all UI types that the device supports for displaying specific challenge user interfaces within the SDK.
+text = Text interface
+single-select = Select a single option
+multi-select = Select multiple options
+oob = Out of ounds
+html-other = HTML Other (only valid when cardPaymentMethodSpecificInput.threeDSecure.sdkData.deviceRenderOptions.sdkInterface is set to html)
+-->
+    </transfer>
+
+    <transfer name="WorldlineExemptionOutput">
+        <property name="exemptionRaised" type="string"/>
+        <property name="exemptionRejectionReason" type="string"/>
+        <property name="exemptionRequest" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineAuthenticationAmount">
+        <property name="amount" type="int"/>
+        <property name="currencyCode" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineFraudResults">
+        <property name="avsResult" type="string"/>
+        <property name="cvvResult" type="string"/>
+        <property name="fraudServiceResult" type="string"/>
+        <property name="fraugster" type="WorldlineFraugster"/>
+        <property name="inAuth" type="WorldlineInAuth"/>
+        <property name="microsoftFraudProtection" type="WorldlineMicrosoftFraudProtection"/>
+        <property name="retailDecisions" type="WorldlineRetailDecisions"/>
+    </transfer>
+
+    <transfer name="WorldlineInAuth">
+        <property name="deviceCategory" type="string"/>
+        <property name="deviceId" type="string"/>
+        <property name="riskScore" type="string"/>
+        <property name="trueIpAddress" type="string"/>
+        <property name="trueIpAddressCountry" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineRetailDecisions">
+        <property name="fraudCode" type="string"/>
+        <property name="fraudNeural" type="string"/>
+        <property name="fraudRCF" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineMicrosoftFraudProtection">
+        <property name="deviceCountryCode" type="string"/>
+        <property name="deviceId" type="string"/>
+        <property name="fraudScore" type="int"/>
+        <property name="trueIpAddress" type="string"/>
+        <property name="userDeviceType" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineFraugster">
+        <property name="fraudInvestigationPoints" type="string"/>
+        <property name="fraudScore" type="int"/>
+    </transfer>
+
+    <transfer name="WorldlineCard">
+        <property name="cardNumber" type="string"/>
+        <property name="cardholderName" type="string"/>
+        <property name="expiryDate" type="string"/>
+    </transfer>
+
+    <transfer name="HostedCheckoutSpecificInput">
+        <property name="isRecurring" type="bool"/>
+        <property name="locale" type="string"/>
+        <property name="paymentProductFilters" type="PaymentProductFiltersHostedCheckout"/>
+        <property name="returnCancelState" type="bool"/>
+        <property name="returnUrl" type="string"/>
+        <property name="showResultPage" type="bool"/>
+        <property name="tokens" type="string"/>
+        <property name="validateShoppingCart" type="bool"/>
+        <property name="variant" type="string"/>
+    </transfer>
+
+    <transfer name="PaymentProductFiltersHostedCheckout">
+        <property name="exclude" type="WorldlinePaymentProductFilter"/>
+        <property name="restrictTo" type="WorldlinePaymentProductFilter"/>
+        <property name="tokensOnly" type="bool"/>
+    </transfer>
+
+    <transfer name="WorldlinePaymentProductFilter">
+        <property name="groups" type="string[]"/>
+        <property name="products" type="int[]" singular="product"/>
+    </transfer>
+
+    <transfer name="WorldlineOrder">
+        <property name="additionalInput" type="WorldlineAdditionalOrderInput"/>
+        <property name="amountOfMoney" type="AmountOfMoney"/>
+        <property name="customer" type="WorldlineCustomer"/>
+        <property name="items" type="WorldlineLineItem[]"/>
+        <property name="references" type="WorldlineOrderReferences"/>
+        <property name="shipping" type="WorldlineShipping"/>
+        <property name="shoppingCart" type="WorldlineShoppingCart"/>
+    </transfer>
+
+    <transfer name="WorldlineAdditionalOrderInput">
+        <property name="installments" type="WorldlineInstallments"/>
+        <property name="loanRecipient" type="WorldlineLoanRecipient"/>
+        <property name="orderDate" type="string"/>
+        <property name="typeInformation" type="WorldlineOrderTypeInformation"/>
+    </transfer>
+
+    <transfer name="WorldlineOrderTypeInformation">
+        <property name="purchaseType" type="string"/>
+        <property name="transactionType" type="string"/>
+        <property name="usageType" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineLoanRecipient">
+        <property name="accountNumber" type="string"/>
+        <property name="dateOfBirth" type="string"/>
+        <property name="partialPan" type="string"/>
+        <property name="surname" type="string"/>
+        <property name="zip" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineInstallments">
+        <property name="amountOfMoneyPerInstallment" type="AmountOfMoney"/>
+        <property name="frequencyOfInstallments" type="string"/>
+        <property name="installmentPlanCode" type="int"/>
+        <property name="interestRate" type="string"/>
+        <property name="numberOfInstallments" type="int"/>
+    </transfer>
+
+    <transfer name="AmountOfMoney">
+        <property name="amount" type="int"/>
+        <property name="currencyCode" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineCustomer">
+        <property name="account" type="WorldlineAccount"/>
+        <property name="accountType" type="string"/>
+        <property name="billingAddress" type="WorldlineAddress"/>
+        <property name="companyInformation" type="WorldlineCompanyInformation"/>
+        <property name="contactDetails" type="WorldlineContactDetails"/>
+        <property name="device" type="WorldlineDevice"/>
+        <property name="fiscalNumber" type="string"/> <!-- String(14) -->
+        <property name="isPreviousCustomer" type="bool"/>
+        <property name="locale" type="string"/> <!-- String(6) -->
+        <property name="merchantCustomerId" type="string"/>
+        <property name="personalInformation" type="WorldlinePersonalInformation"/>
+    </transfer>
+
+    <transfer name="WorldlinePersonalInformation">
+        <property name="dateOfBirth" type="string"/> <!-- String(8) -->
+        <property name="gender" type="string"/>
+        <property name="name" type="WorldlineName"/>
+    </transfer>
+
+    <transfer name="WorldlineName">
+        <property name="firstName" type="string"/> <!-- String(15) -->
+        <property name="surName" type="string"/> <!-- String(70) -->
+        <property name="surnamePrefix" type="string"/> <!-- String(15) -->
+        <property name="title" type="string"/> <!-- String(35) -->
+    </transfer>
+
+    <transfer name="WorldlineDevice">
+        <property name="acceptHeader" type="string"/> <!-- String(2048) -->
+        <property name="browserData" type="WorldlineBrowserData"/>
+        <property name="defaultFormFill" type="string"/>
+        <property name="deviceFingerprintTransactionId" type="string"/>
+        <property name="ipAddress" type="string"/> <!-- String(45) -->
+        <property name="locale" type="string"/> <!-- String(8) -->
+        <property name="timezoneOffsetUtcMinutes" type="string"/> <!-- String(6) -->
+        <property name="userAgent" type="string"/> <!-- String(2048) -->
+    </transfer>
+
+    <transfer name="WorldlineBrowserData">
+        <property name="colorDepth" type="int"/> <!-- Integer(2) -->
+        <property name="innerHeight" type="string"/> <!-- String (6) -->
+        <property name="innerWidth" type="string"/> <!-- String (6) -->
+        <property name="javaEnabled" type="bool"/>
+        <property name="javaScriptEnabled" type="bool"/>
+        <property name="screenHeight" type="string"/> <!-- String (6) -->
+        <property name="screenWidth" type="string"/> <!-- String (6) -->
+    </transfer>
+
+    <transfer name="WorldlineAccount">
+        <property name="authentication" type="WorldlineAuthentication"/>
+        <property name="changeDate" type="string"/> <!-- String(8) -->
+        <property name="changedDuringCheckout" type="bool"/>
+        <property name="createDate" type="string"/> <!-- String(8) -->
+        <property name="hadSuspiciousActivity" type="bool"/>
+        <property name="hasForgottenPassword" type="bool"/>
+        <property name="hasPassword" type="bool"/>
+        <property name="passwordChangeDate" type="string"/> <!-- String(8) -->
+        <property name="passwordChangedDuringCheckout" type="bool"/>
+        <property name="paymentAccountOnFile" type="WorldlinePaymentAccountOnFile"/>
+        <property name="paymentAccountOnFileType" type="string"/>
+        <property name="paymentActivity" type="WorldlinePaymentActivity"/>
+    </transfer>
+
+    <transfer name="WorldlinePaymentActivity">
+        <property name="numberOfPaymentAttemptsLast24Hours" type="int"/> <!-- Integer(3) -->
+        <property name="numberOfPaymentAttemptsLastYear" type="int"/> <!-- Integer(3) -->
+        <property name="numberOfPurchasesLast6Months" type="int"/> <!-- Integer(4) -->
+    </transfer>
+
+    <transfer name="WorldlinePaymentAccountOnFile">
+        <property name="createDate" type="string"/> <!-- String(8) -->
+        <property name="numberOfCardOnFileCreationAttemptsLast24Hours" type="int"/> <!-- Integer(3) -->
+    </transfer>
+
+    <transfer name="WorldlineAuthentication">
+        <property name="data" type="string"/> <!-- String(20000) -->
+        <property name="method" type="string"/>
+        <property name="utcTimestamp" type="string"/> <!-- String(12) -->
+    </transfer>
+
+    <transfer name="WorldlineAddress">
+        <property name="additionalInfo" type="string"/> <!-- String(50) -->
+        <property name="city" type="string"/>
+        <property name="countryCode" type="string"/> <!-- String(2) -->
+        <property name="houseNumber" type="string"/> <!-- String(15) -->
+        <property name="state" type="string"/> <!-- String(35) -->
+        <property name="stateCode" type="string"/>
+        <property name="street" type="string"/> <!-- String(50) -->
+        <property name="zip" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineLineItem">
+        <property name="amountOfMoney" type="AmountOfMoney"/>
+        <property name="comments" type="string"/>
+        <property name="invoiceData" type="WorldlineLineItemInvoiceData"/>
+        <property name="orderLineDetails" type="WorldlineOrderLineDetails"/>
+    </transfer>
+
+    <transfer name="WorldlineOrderLineDetails">
+        <property name="discountAmount" type="int"/>
+        <property name="googleProductCategoryId" type="int"/>
+        <property name="lineAmountTotal" type="int"/>
+        <property name="productCategory" type="string"/>
+        <property name="productCode" type="string"/>
+        <property name="productName" type="string"/>
+        <property name="productPrice" type="int"/>
+        <property name="productSku" type="string"/>
+        <property name="productType" type="string"/>
+        <property name="quantity" type="int"/>
+        <property name="taxAmount" type="int"/>
+        <property name="unit" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineLineItemInvoiceData">
+        <property name="description" type="string"/>
+        <property name="merchantLinenumber" type="string"/>
+        <property name="merchantPageNumber" type="string"/>
+        <property name="nrOfItems" type="string"/>
+        <property name="pricePerItem" type="int"/>
+    </transfer>
+
+    <transfer name="WorldlineOrderReferences">
+        <property name="descriptor" type="string"/>
+        <property name="invoiceData" type="WorldlineOrderInvoiceData"/>
+        <property name="merchantOrderId" type="int"/>
+        <property name="merchantReference" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineOrderInvoiceData">
+        <property name="additionalData" type="string"/>
+        <property name="invoiceDate" type="string"/>
+        <property name="invoiceNumber" type="string"/>
+        <property name="textQualifiers" type="string[]"/>
+    </transfer>
+
+    <transfer name="WorldlineShipping">
+        <property name="address" type="WorldlineAddressPersonal"/>
+        <property name="addressIndicator" type="string"/>
+        <property name="comments" type="string"/>
+        <property name="emailAddress" type="string"/>
+        <property name="firstUsageDate" type="string"/>
+        <property name="isFirstUsage" type="bool"/>
+        <property name="trackingNumber" type="string"/>
+        <property name="type" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineAddressPersonal">
+        <property name="name" type="WorldlinePersonalName"/>
+        <property name="city" type="string"/>
+        <property name="countryCode" type="string"/>
+        <property name="houseNumber" type="string"/>
+        <property name="street" type="string"/>
+        <property name="zip" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlinePersonalName">
+        <property name="title" type="string"/>
+        <property name="firstName" type="string"/>
+        <property name="surname" type="string"/>
+        <property name="surnamePrefix" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineApiLog">
+        <property name="requestId" type="string"/>
+        <property name="requestMethod" type="string "/>
+        <property name="requestUri" type="string"/>
+        <property name="requestHeaders" type="WorldlineHeader[]" singular="requestHeader"/>
+        <property name="requestBody" type="string"/>
+        <property name="responseHeaders" type="WorldlineHeader[]" singular="responseHeader"/>
+        <property name="responseBody" type="string"/>
+        <property name="errorCode"  type="string"/>
+        <property name="errorMessage" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineHeader">
+        <property name="name" type="string"/>
+        <property name="value" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineShoppingCart">
+        <property name="amountBreakdown" type="WorldlineAmountBreakdown[]"/>
+        <property name="giftCardPurchase" type="WorldlineGiftCardPurchase"/>
+        <property name="isPreOrder" type="bool"/>
+        <property name="items" type="WorldlineLineItem"/>
+        <property name="preOrderItemAvailabilityDate" type="string"/>
+        <property name="reOrderIndicator" type="bool"/>
+    </transfer>
+
+    <transfer name="WorldlineAmountBreakdown">
+        <property name="amount" type="int"/>
+        <property name="type" type="string"/>
+    </transfer>
+
+    <transfer name="WorldlineGiftCardPurchase">
+        <property name="amountOfMoney" type="AmountOfMoney"/>
+        <property name="numberOfGiftCards" type="int"/>
+    </transfer>
+</transfers>

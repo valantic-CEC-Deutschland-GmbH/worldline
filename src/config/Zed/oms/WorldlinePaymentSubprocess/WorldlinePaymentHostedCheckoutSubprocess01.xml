@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<statemachine
+    xmlns="http://static.spryker.com"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://static.spryker.com http://static.spryker.com/oms-01.xsd">
+
+    <process name="WorldlinePaymentHostedCheckout">
+        <states>
+            <state name="hosted checkout pending" reserved="true"/>
+            <state name="hosted checkout created" reserved="true"/>
+            <state name="hosted checkout failed"/>
+            <state name="hosted checkout status cancelled"/>
+            <state name="wait for hosted checkout status" reserved="true"/>
+            <state name="hosted checkout status pending" reserved="true"/>
+            <state name="hosted checkout status payment created" reserved="true"/>
+        </states>
+
+        <transitions>
+            <transition happy="true">
+                <source>new</source>
+                <target>hosted checkout pending</target>
+                <event>create hosted checkout</event>
+            </transition>
+
+            <transition condition="Worldline/IsHostedCheckoutFailed">
+                <source>hosted checkout pending</source>
+                <target>hosted checkout failed</target>
+            </transition>
+
+            <transition condition="Worldline/IsHostedCheckoutCreated" happy="true">
+                <source>hosted checkout pending</source>
+                <target>hosted checkout created</target>
+            </transition>
+
+            <transition happy="true">
+                <source>hosted checkout created</source>
+                <target>hosted checkout status pending</target>
+            </transition>
+
+            <transition>
+                <source>hosted checkout status pending</source>
+                <target>wait for hosted checkout status</target>
+                <event>get hosted checkout status</event>
+            </transition>
+
+            <transition>
+                <source>wait for hosted checkout status</source>
+                <target>hosted checkout status pending</target>
+            </transition>
+
+            <transition condition="Worldline/IsHostedCheckoutStatusCancelled">
+                <source>hosted checkout status pending</source>
+                <target>hosted checkout status cancelled</target>
+            </transition>
+
+            <transition condition="Worldline/IsHostedCheckoutTimedOut">
+                <source>hosted checkout status pending</source>
+                <target>hosted checkout status cancelled</target>
+            </transition>
+
+            <transition condition="Worldline/IsHostedCheckoutStatusReceived" happy="true">
+                <source>hosted checkout status pending</source>
+                <target>hosted checkout status payment created</target>
+            </transition>
+
+        </transitions>
+
+        <events>
+            <event name="create hosted checkout" onEnter="true" command="Worldline/HostedCheckoutCreate"/>
+            <event name="get hosted checkout status" command="Worldline/HostedCheckoutStatus" timeout="90 seconds"/>
+        </events>
+    </process>
+</statemachine>

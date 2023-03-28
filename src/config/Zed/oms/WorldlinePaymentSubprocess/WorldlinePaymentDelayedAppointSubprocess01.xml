@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<statemachine
+    xmlns="http://static.spryker.com"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://static.spryker.com http://static.spryker.com/oms-01.xsd">
+
+    <process name="WorldlinePaymentDelayedAppoint">
+        <states>
+            <state name="payment pending" reserved="true"/>
+            <state name="wait for payment status" reserved="true"/>
+            <state name="payment cancelled" reserved="false"/>
+            <state name="payment rejected" reserved="false"/>
+        </states>
+
+        <transitions>
+            <transition happy="true">
+                <source>hosted checkout status payment created</source>
+                <target>payment pending</target>
+            </transition>
+
+            <transition>
+                <source>payment pending</source>
+                <target>wait for payment status</target>
+                <event>get payment status</event>
+            </transition>
+
+            <transition>
+                <source>wait for payment status</source>
+                <target>payment pending</target>
+            </transition>
+
+            <transition condition="Worldline/IsPaymentRejected">
+                <source>payment pending</source>
+                <target>payment rejected</target>
+            </transition>
+
+            <transition condition="Worldline/IsPaymentCancelled">
+                <source>payment pending</source>
+                <target>payment cancelled</target>
+            </transition>
+
+            <transition condition="Worldline/IsPaymentGuaranteed" happy="true">
+                <source>payment pending</source>
+                <target>ready for order export</target>
+            </transition>
+        </transitions>
+
+        <events>
+            <event name="get payment status" command="Worldline/PaymentStatus" timeout="10 minutes"/>
+        </events>
+    </process>
+</statemachine>

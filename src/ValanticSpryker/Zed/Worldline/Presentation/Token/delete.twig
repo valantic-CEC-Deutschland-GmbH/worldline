@@ -1,0 +1,32 @@
+{% extends '@Gui/Layout/layout.twig' %}
+
+{% set widget_title = 'Payment token deletion confirmation' %}
+
+{% block head_title %}
+    {{ widget_title | trans }}
+{% endblock %}
+{% block section_title %}
+    {{ widget_title | trans }}
+{% endblock %}
+
+{% block action %}
+    {{ backActionButton(backUrl, 'Back' | trans) }}
+{% endblock %}
+
+{% block content %}
+
+    {% embed '@Gui/Partials/widget.twig' %}
+
+        {% block widget_content %}
+            {{ form_start(paymentTokenDeleteForm, {'action': url('/worldline/token/confirm')}) }}
+            {{ form_widget(paymentTokenDeleteForm.idCustomer) }}
+            {{ form_widget(paymentTokenDeleteForm.idToken) }}
+
+            <a href="{{ backUrl }}" class="btn btn-back">{{ 'Back' | trans}}</a>
+            <button class="btn btn-danger safe-submit">{{ 'Delete payment token' | trans}}</button>
+            {{ form_end(paymentTokenDeleteForm) }}
+        {% endblock %}
+
+    {% endembed %}
+
+{% endblock %}

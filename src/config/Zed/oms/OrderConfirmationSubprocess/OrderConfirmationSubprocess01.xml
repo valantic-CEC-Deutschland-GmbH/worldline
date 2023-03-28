@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<statemachine
+    xmlns="http://static.spryker.com"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://static.spryker.com http://static.spryker.com/oms-01.xsd">
+
+    <process name="OrderConfirmation">
+        <states>
+            <state name="confirmation mail message created" reserved="true"/>
+        </states>
+
+        <transitions>
+            <transition happy="true">
+                <source>confirmation mail message created</source>
+                <target>ready for order export</target>
+                <event>ready for order export</event>
+            </transition>
+        </transitions>
+
+        <events>
+            <event name="create confirmation mail message" onEnter="true" command="Oms/ConfirmationMailQueueMessage"/>
+        </events>
+    </process>
+</statemachine>

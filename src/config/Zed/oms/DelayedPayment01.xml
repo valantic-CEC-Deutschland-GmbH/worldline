@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<statemachine
+    xmlns="http://static.spryker.com"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://static.spryker.com http://static.spryker.com/oms-01.xsd">
+
+    <process name="DelayedPayment01" main="true">
+        <subprocesses>
+            <process>Base</process>
+            <process>WorldlinePaymentHostedCheckout</process>
+            <process>WorldlinePaymentAppoint</process>
+            <process>OrderExport</process>
+            <process>Shipment</process>
+            <process>Cancellation</process>
+            <process>WorldlinePaymentCapture</process>
+            <process>Return</process>
+            <process>Refund</process>
+            <process>Closed</process>
+        </subprocesses>
+    </process>
+
+    <process name="Base" file="BaseSubprocess/BaseSubprocess01.xml"/>
+    <process name="WorldlinePaymentHostedCheckout" file="WorldlinePaymentSubprocess/WorldlinePaymentHostedCheckoutSubprocess01.xml"/>
+    <process name="WorldlinePaymentAppoint" file="WorldlinePaymentSubprocess/WorldlinePaymentDelayedAppointSubprocess01.xml"/>
+    <process name="OrderExport" file="OrderExportSubprocess/OrderExportSubprocess01.xml"/>
+    <process name="Shipment" file="ShipmentSubprocess/ShipmentDelayedSubprocess01.xml"/>
+    <process name="Cancellation" file="CancellationSubprocess/CancellationSubprocess01.xml"/>
+    <process name="WorldlinePaymentCapture" file="WorldlinePaymentSubprocess/WorldlinePaymentDelayedCaptureSubprocess01.xml"/>
+    <process name="Return" file="ReturnRefundSubprocess/ReturnSubprocess01.xml"/>
+    <process name="Refund" file="ReturnRefundSubprocess/RefundSubprocess01.xml"/>
+    <process name="Closed" file="BaseSubprocess/ClosedSubprocess01.xml"/>
+</statemachine>
