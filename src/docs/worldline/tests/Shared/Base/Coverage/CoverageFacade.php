@@ -1,8 +1,8 @@
 <?php declare(strict_types = 1);
 
-namespace ValanticSprykerTest\Shared\Base\Coverage;
+namespace Base\Coverage;
 
-use ValanticSprykerTest\Shared\Base\Coverage\Report\SonarqubeClover;
+use Base\Coverage\Report\SonarqubeClover;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Driver\Xdebug3Driver;
 use SebastianBergmann\CodeCoverage\Filter;
@@ -60,7 +60,7 @@ class CoverageFacade
      * is omitted, subsequent calls to start and stop will
      * be ignored, calling report will throw an exception.
      *
-     * @throws \ValanticSprykerTest\Shared\Base\Coverage\CoverageFacadeException
+     * @throws \Base\Coverage\CoverageFacadeException
      *
      * @return void
      */
@@ -82,7 +82,7 @@ class CoverageFacade
     }
 
     /**
-     * @throws \ValanticSprykerTest\Shared\Base\Coverage\CoverageFacadeException
+     * @throws \Base\Coverage\CoverageFacadeException
      *
      * @return void
      */

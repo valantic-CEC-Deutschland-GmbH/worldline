@@ -1,9 +1,9 @@
 <?php declare(strict_types = 1);
 
-namespace ValanticSprykerTest\Shared\Base;
+namespace Base;
 
+use Base\Coverage\CoverageFacade;
 use Codeception\Test\Unit;
-use ValanticSprykerTest\Shared\Base\Coverage\CoverageFacade;
 
 /**
  * @package ValanticSprykerTest\Shared\Base

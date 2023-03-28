@@ -2,8 +2,13 @@
 
 declare(strict_types = 1);
 
-namespace ValanticSprykerTest\Shared\Base\Coverage\Report;
+namespace Base\Coverage\Report;
 
+use DOMDocument;
+use SebastianBergmann\CodeCoverage\CodeCoverage;
+use SebastianBergmann\CodeCoverage\Driver\WriteOperationFailedException;
+use SebastianBergmann\CodeCoverage\Node\File;
+use SebastianBergmann\CodeCoverage\Util\Filesystem;
 use function count;
 use function dirname;
 use function file_put_contents;
@@ -12,11 +17,6 @@ use function ksort;
 use function max;
 use function range;
 use function time;
-use DOMDocument;
-use SebastianBergmann\CodeCoverage\CodeCoverage;
-use SebastianBergmann\CodeCoverage\Driver\WriteOperationFailedException;
-use SebastianBergmann\CodeCoverage\Node\File;
-use SebastianBergmann\CodeCoverage\Util\Filesystem;
 
 class SonarqubeClover
 {

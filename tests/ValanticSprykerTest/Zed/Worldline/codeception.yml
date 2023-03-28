@@ -1,5 +1,4 @@
 namespace: ValanticSprykerTest\Zed\Worldline
-extends: '../../codeception.base.yml'
 
 suites:
   Business:
@@ -8,7 +7,6 @@ suites:
     modules:
       enabled:
         - Asserts
-        - \PyzTest\Shared\Testify\Helper\Environment
         - \SprykerTest\Shared\Testify\Helper\LocatorHelper:
             projectNamespaces: ['ValanticSpryker']
         - \SprykerTest\Shared\Testify\Helper\DataCleanupHelper

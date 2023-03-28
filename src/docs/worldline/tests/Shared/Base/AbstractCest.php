@@ -1,8 +1,7 @@
 <?php declare(strict_types = 1);
 
-namespace ValanticSprykerTest\Shared\Base;
+namespace Base;
 
-use ValanticSprykerTest\Shared\Base\Coverage\CoverageFacade;
 use SprykerTest\Glue\Testify\Tester\ApiEndToEndTester;
 
 /**

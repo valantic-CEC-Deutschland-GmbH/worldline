@@ -4,10 +4,10 @@ declare(strict_types = 1);
 
 namespace ValanticSprykerTest\Zed\Worldline\Business\Mapper;
 
-use Generated\GlueBackend\Ide\Worldline;
+use Base\AbstractTest;
+use Codeception\Test\Unit;
 use Generated\Shared\Transfer\AmountOfMoneyTransfer;
 use Generated\Shared\Transfer\HostedCheckoutSpecificInputTransfer;
-use Generated\Shared\Transfer\WorldlineAccountTransfer;
 use Generated\Shared\Transfer\WorldlineAddressTransfer;
 use Generated\Shared\Transfer\WorldlineBrowserDataTransfer;
 use Generated\Shared\Transfer\WorldlineCardPaymentMethodSpecificOutputTransfer;
@@ -37,10 +37,8 @@ use Ingenico\Connect\Sdk\Domain\Payment\Definitions\PaymentStatusOutput;
 use Ingenico\Connect\Sdk\Domain\Payment\Definitions\ThreeDSecureResults;
 use ValanticSpryker\Shared\Worldline\WorldlineConstants;
 use ValanticSpryker\Zed\Worldline\Business\Mapper\HostedCheckoutMapper;
-use ValanticSpryker\Zed\Worldline\WorldlineConfig;
-use ValanticSprykerTest\Shared\Base\AbstractTest;
 
-class HostedCheckoutMapperTest extends AbstractTest
+class HostedCheckoutMapperTest extends Unit
 {
     private const EXAMPLE_RETURN_URL = 'https://some.secure.url';
     private const EXAMPLE_TOKENS_STRING = 'uuid-00393-292929-883,uuid-2672-237823-233';
