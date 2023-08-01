@@ -1,5 +1,5 @@
 {
-    "name": "valantic-cec/worldline",
+    "name": "valantic-spryker-eco/worldline",
     "type": "library",
     "description": "Worldline payment service provider spryker glue integration.",
     "license": "proprietary",
