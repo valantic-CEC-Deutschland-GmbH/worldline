@@ -2,7 +2,7 @@
     "name": "valantic-cec/worldline",
     "type": "library",
     "description": "Worldline payment service provider spryker glue integration.",
-    "license": "MIT",
+    "license": "proprietary",
     "require": {
         "php": ">=8.0",
         "ingenico-epayments/connect-sdk-php": "^6.33",
