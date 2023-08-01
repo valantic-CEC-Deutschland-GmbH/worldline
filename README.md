@@ -6,7 +6,7 @@
  - Adds the integration of the worldline PSP provider platform Global Collect. See https://epayments-api.developer-ingenico.com/s2sapi/v1/en_US/php/concepts.html?paymentPlatform=GLOBALCOLLECT
 
 # Install
-- `composer require valantic-cec/worldline`
+- `composer require valantic-spryker-eco/worldline`
 
 # HowTos Cli
 
