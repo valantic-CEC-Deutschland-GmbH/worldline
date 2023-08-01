@@ -48,7 +48,7 @@ XDEBUG:
 
 ### install the required modules using composer
 
-    composer require valantic-spryker/worldline --update-with-dependencies
+    composer require valantic-cec/worldline --update-with-dependencies
    
 
 Verification:
